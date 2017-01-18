@@ -20,17 +20,30 @@ $(document).ready(function () {
 
     if(shape !== undefined) { // mousedown has started a new shape
       var context = settings.canvas.getContext("2d");
-      shape.endX = e.clientX;
+      shape.draw(context);
+      settings.nextShape = undefined;
+    }
+  });
+
+  $(settings.canvas).mousemove(function(e) {
+    var shape = settings.nextShape;
+
+    if(shape !== undefined) {
+      console.log("moving");
+      shape.endX = e.clientX;   //update coordinates
       shape.endY = e.clientY;
+      var context = settings.canvas.getContext("2d");
       shape.draw(context);
     }
-  })
+  });
 });
 
 
 
-//ES6 classes
-//TODO: find a way to move them to their own files. Import isn't working.
+// ES5 objects
+// TODO: get ES6 support so we can move these to their own files.
+//       ES6 seems to be required for referencing other files.
+//       Could use babel
 class Shape {
   constructor(x, y) {
     this.startX = x;
@@ -55,7 +68,5 @@ class Line extends Shape {
     context.moveTo(this.startX, this.startY); // Designate starting point
     context.lineTo(this.endX, this.endY);     // Designate endpoint
     context.stroke();                         // Draw the line
-
-    settings.nextShape = undefined;           // Line is drawn, no longer in progress
   }
 }
