@@ -6,6 +6,7 @@ var settings = {
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
+  events: [],
   undone: []    // Stack containing undone actions
 };
 
@@ -40,6 +41,7 @@ $(document).ready(function () {
 
   $(settings.canvas).mouseup(function(e) {
     settings.shapes.push(settings.currentShape);
+    settings.events.push( {command: "create", shapeID: settings.shapes.length-1});
 
     settings.currentShape = undefined;   // End any ongoing shape operations
     settings.undone = [];
@@ -60,19 +62,51 @@ $(document).ready(function () {
 
       if(e.ctrlKey) {                                           // ctrl is held
 
-        if(e.which == 90 && settings.shapes.length != 0) {      // z was pressed and there are active shapes
-          settings.undone.push(settings.shapes.pop());          // move shape from active stack to undone stack
-          drawAll(settings.context);                            // redraw canvas
+        if(e.which == 90 && settings.events.length != 0) {      // z was pressed and there are active shapes
+          var event = settings.events.pop()
+          undo(event);
         }
         else if(e.which == 89 && settings.undone.length != 0) { // y was pressed and there are undone shapes
-          settings.shapes.push(settings.undone.pop());          // move shape from undone back to active stack
-          drawAll(settings.context);                            // redraw canvas
+          var event = settings.undone.pop()                     // move shape from undone back to active stack
+          redo(event)                                           // redraw canvas
         }
       }
   });
 });
 
+function undo(event) {
 
+  if(event.command === "create") {
+    settings.shapes[event.shapeID].deleted = true;
+    settings.undone.push(event);          // move shape from active stack to undone stack
+  }
+  else if(event.command === "delete") {
+    settings.shapes[event.shapeID].deleted = false;
+    settings.undone.push(event);
+  }
+  else if(event.command === "move") {
+    console.log("NOT IMPLEMENTED")
+  }
+
+  drawAll(settings.context);                            // redraw canvas
+}
+
+function redo(event) {
+
+  if(event.command === "create") {
+    settings.shapes[event.shapeID].deleted = false;
+    settings.events.push(event);
+  }
+  else if(event.command === "delete") {
+    settings.shapes[event.shapeID].deleted = true;
+    settings.events.push(event);
+  }
+  else if(event.command === "move") {
+    console.log("NOT IMPLEMENTED");
+  }
+
+  drawAll(settings.context);
+}
 /**
  * Clear the canvas and draw every shape in settings.shapes
  */
@@ -80,7 +114,10 @@ function drawAll(context) {
   context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
 
   for(var i = 0; i < settings.shapes.length; i++) {
-    settings.shapes[i].draw(context);
+    var shape = settings.shapes[i];
+    if(!shape.deleted) {
+      shape.draw(context);
+    }
   }
 }
 
@@ -93,6 +130,7 @@ class Shape {
     this.startY = y;
     this.endX = undefined;
     this.endY = undefined;
+    this.deleted = false;
   }
 
   setEnd(x, y) {
