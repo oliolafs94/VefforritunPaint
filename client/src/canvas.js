@@ -2,9 +2,10 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-  nextObject: "line",
+  nextObject: "pen",
   nextColor: "black",
-  nextShape: undefined  // Gets set when mousedown initiates a new shape
+  currentShape: undefined,
+  shapes: []
 };
 
 
@@ -14,39 +15,46 @@ $(document).ready(function () {
   settings.context = settings.canvas.getContext("2d");
 
   $(settings.canvas).mousedown(function(e) {
+
     switch(settings.nextObject) {
+
       case("line"):
-        settings.nextShape = new Line(e.offsetX, e.offsetY);
+        settings.currentShape = new Line(e.offsetX, e.offsetY);
         break;
 
       case("pen"):
-        settings.nextShape = new Pen(e.offsetX, e.offsetY);  // start a new shape
+        settings.currentShape = new Pen(e.offsetX, e.offsetY);     // start a new shape
         break;
 
     }
   });
 
   $(settings.canvas).mouseup(function(e) {
-    settings.nextShape = undefined;   // End any ongoing shape operations
+    settings.shapes.push(settings.currentShape);
+    settings.currentShape = undefined;   // End any ongoing shape operations
   });
 
   $(settings.canvas).mousemove(function(e) {
-    var shape = settings.nextShape;
+    var shape = settings.currentShape;
 
     if(shape !== undefined) {
       shape.setEnd(e.offsetX, e.offsetY);
-      settings.context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
-      shape.draw(settings.context);
+      drawAll(settings.context);
     }
   });
 });
 
+function drawAll(context) {
+  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
 
+  for(var i = 0; i < settings.shapes.length; i++) {
+    settings.shapes[i].draw(context);
+  }
+}
 
 // ES5 classes
 // TODO: get ES6 support so we can move these to their own files.
 //       ES6 seems to be required for referencing other files.
-//       Could use babel
 class Shape {
   constructor(x, y) {
     this.startX = x;
