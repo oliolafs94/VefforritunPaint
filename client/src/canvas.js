@@ -33,6 +33,7 @@ $(document).ready(function () {
       shape.endX = e.clientX;   //update coordinates
       shape.endY = e.clientY;
       var context = settings.canvas.getContext("2d");
+      context.clearRect(0,0,settings.canvas.width,settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
       shape.draw(context);
     }
   });
