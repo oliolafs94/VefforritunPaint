@@ -2,7 +2,7 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-  nextObject: "pen",
+  nextObject: "rect",
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
@@ -25,6 +25,10 @@ $(document).ready(function () {
 
       case("pen"):
         settings.currentShape = new Pen(e.offsetX, e.offsetY);     // start a new shape
+        break;
+
+      case("rect"):
+        settings.currentShape = new Rect(e.offsetX, e.offsetY);
         break;
 
     }
@@ -88,6 +92,17 @@ class Shape {
   setEnd(x, y) {
     this.endX = x;
     this.endY = y;
+  }
+}
+
+class Rect extends Shape{
+  constructor(x, y) {
+    super(x, y);
+  }
+
+
+  draw(context) {
+    context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
   }
 }
 
