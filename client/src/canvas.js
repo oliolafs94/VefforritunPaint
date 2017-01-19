@@ -40,7 +40,9 @@ $(document).ready(function () {
 
   $(settings.canvas).mouseup(function(e) {
     settings.shapes.push(settings.currentShape);
+
     settings.currentShape = undefined;   // End any ongoing shape operations
+    settings.undone = [];
   });
 
   $(settings.canvas).mousemove(function(e) {
@@ -56,17 +58,17 @@ $(document).ready(function () {
   // This listener is attached to document
   $(document).keydown(function(e) {
 
-    if(e.ctrlKey) {                                   // ctrl is held
+      if(e.ctrlKey) {                                   // ctrl is held
 
-      if(e.which == 90) {                             // z was pressed
-        settings.undone.push(settings.shapes.pop());  // move shape from active stack to undone stack
-        drawAll(settings.context);                    // redraw canvas
+        if(e.which == 90 && settings.shapes.length != 0) {                             // z was pressed
+          settings.undone.push(settings.shapes.pop());  // move shape from active stack to undone stack
+          drawAll(settings.context);                    // redraw canvas
+        }
+        else if(e.which == 89 && settings.undone.length != 0) {                        // y was pressed
+          settings.shapes.push(settings.undone.pop());  // move shape from undone back to active stack
+          drawAll(settings.context);                    // redraw canvas
+        }
       }
-      else if(e.which == 89) {                        // y was pressed
-        settings.shapes.push(settings.undone.pop());  // move shape from undone back to active stack
-        drawAll(settings.context);                    // redraw canvas
-      }
-    }
   });
 });
 
