@@ -2,7 +2,7 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-  nextObject: "circle",
+  nextObject: "pen",
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
@@ -72,6 +72,37 @@ $(document).ready(function () {
         }
       }
   });
+
+  //Sets which shape will be drawn next.
+  $(".shapeButtons > .btn").click(function(e) {
+
+      var idClicked = e.target.id;
+      $(this).addClass("btn-primary").siblings().removeClass("btn-primary");
+      $("#penButton").addClass("btn-default");
+
+
+      switch(idClicked) {
+
+        case("penButton"):
+          settings.nextObject = "pen";
+          break;
+
+        case("lineButton"):
+          settings.nextObject = "line";
+          break;
+
+        case("rectButton"):
+          settings.nextObject = "rect";
+          break;
+
+        case("circleButton"):
+          settings.nextObject = "circle";
+          break;
+
+      }
+
+  });
+
 });
 
 function undo(event) {
