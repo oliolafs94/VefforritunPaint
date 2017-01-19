@@ -2,7 +2,7 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-  nextObject: "pen",
+  nextObject: "circle",
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
@@ -24,7 +24,11 @@ $(document).ready(function () {
         break;
 
       case("pen"):
-        settings.currentShape = new Pen(e.offsetX, e.offsetY);     // start a new shape
+        settings.currentShape = new Pen(e.offsetX, e.offsetY);
+        break;
+
+      case("circle"):
+        settings.currentShape = new Circle(e.offsetX, e.offsetY);
         break;
 
     }
@@ -131,6 +135,22 @@ class Pen extends Shape {
       context.lineTo(to.x, to.y);
       from = to;
     }
+    context.stroke();
+  }
+}
+
+class Circle extends Shape {
+  constructor(x, y) {
+    super(x, y);
+  }
+
+  draw(context) {
+    var dX = this.endX - this.startX;
+    var dY = this.endY - this.startY;
+    var radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
+
+    context.beginPath();
+    context.arc(this.startX, this.startY, radius, 0, 2*Math.PI, false);
     context.stroke();
   }
 }
