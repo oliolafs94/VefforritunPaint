@@ -2,11 +2,7 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-<<<<<<< HEAD
   nextObject: "circle",
-=======
-  nextObject: "rect",
->>>>>>> f3193c9e56da26ec1c6685fc45a37cb894dbdeb7
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
