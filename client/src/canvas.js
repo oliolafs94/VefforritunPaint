@@ -64,6 +64,13 @@ $(document).ready(function () {
       }
     }
   });
+
+  /*$('.radioButtons').click(function() {
+     if($('#penButton').is(':checked')) {
+       console.log("working");
+     }
+  });*/
+
 });
 
 
