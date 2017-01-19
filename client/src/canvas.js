@@ -5,7 +5,8 @@ var settings = {
   nextObject: "pen",
   nextColor: "black",
   currentShape: undefined,
-  shapes: []
+  shapes: [],
+  undone: []    // Stack containing undone actions
 };
 
 
@@ -40,10 +41,31 @@ $(document).ready(function () {
     if(shape !== undefined) {
       shape.setEnd(e.offsetX, e.offsetY);
       drawAll(settings.context);
+      shape.draw(settings.context);
+    }
+  });
+
+  // This listener is attached to document
+  $(document).keydown(function(e) {
+
+    if(e.ctrlKey) {                                   // ctrl is held
+
+      if(e.which == 90) {                             // z was pressed
+        settings.undone.push(settings.shapes.pop());  // move shape from active stack to undone stack
+        drawAll(settings.context);                    // redraw canvas
+      }
+      else if(e.which == 89) {                        // y was pressed
+        settings.shapes.push(settings.undone.pop());  // move shape from undone back to active stack
+        drawAll(settings.context);                    // redraw canvas
+      }
     }
   });
 });
 
+
+/**
+ * Clear the canvas and draw every shape in settings.shapes
+ */
 function drawAll(context) {
   context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
 
