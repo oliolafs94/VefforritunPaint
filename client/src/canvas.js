@@ -71,10 +71,13 @@ $(document).ready(function () {
       }
   });
 
-  $('.shapeButtons > .btn').click(function(e) {
+  //Sets which shape will be drawn next.
+  $(".shapeButtons > .btn").click(function(e) {
 
       var idClicked = e.target.id;
-      $(this).addClass("active").siblings().removeClass("active");
+      $(this).addClass("btn-primary").siblings().removeClass("btn-primary");
+      $("#penButton").addClass("btn-default");
+
 
       switch(idClicked) {
 
