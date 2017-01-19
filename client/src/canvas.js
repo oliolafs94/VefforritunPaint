@@ -2,7 +2,7 @@
 var settings = {
   canvas: undefined,    // Gets set when the document is ready
   context: undefined,
-  nextObject: "rect",
+  nextObject: "circle",
   nextColor: "black",
   currentShape: undefined,
   shapes: [],
@@ -24,7 +24,11 @@ $(document).ready(function () {
         break;
 
       case("pen"):
-        settings.currentShape = new Pen(e.offsetX, e.offsetY);     // start a new shape
+        settings.currentShape = new Pen(e.offsetX, e.offsetY);
+        break;
+
+      case("circle"):
+        settings.currentShape = new Circle(e.offsetX, e.offsetY);
         break;
 
       case("rect"):
@@ -36,7 +40,9 @@ $(document).ready(function () {
 
   $(settings.canvas).mouseup(function(e) {
     settings.shapes.push(settings.currentShape);
+
     settings.currentShape = undefined;   // End any ongoing shape operations
+    settings.undone = [];
   });
 
   $(settings.canvas).mousemove(function(e) {
@@ -52,17 +58,17 @@ $(document).ready(function () {
   // This listener is attached to document
   $(document).keydown(function(e) {
 
-    if(e.ctrlKey) {                                   // ctrl is held
+      if(e.ctrlKey) {                                           // ctrl is held
 
-      if(e.which == 90) {                             // z was pressed
-        settings.undone.push(settings.shapes.pop());  // move shape from active stack to undone stack
-        drawAll(settings.context);                    // redraw canvas
+        if(e.which == 90 && settings.shapes.length != 0) {      // z was pressed and there are active shapes
+          settings.undone.push(settings.shapes.pop());          // move shape from active stack to undone stack
+          drawAll(settings.context);                            // redraw canvas
+        }
+        else if(e.which == 89 && settings.undone.length != 0) { // y was pressed and there are undone shapes
+          settings.shapes.push(settings.undone.pop());          // move shape from undone back to active stack
+          drawAll(settings.context);                            // redraw canvas
+        }
       }
-      else if(e.which == 89) {                        // y was pressed
-        settings.shapes.push(settings.undone.pop());  // move shape from undone back to active stack
-        drawAll(settings.context);                    // redraw canvas
-      }
-    }
   });
 
   /*$('.radioButtons').click(function() {
@@ -106,7 +112,6 @@ class Rect extends Shape{
   constructor(x, y) {
     super(x, y);
   }
-
 
   draw(context) {
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
@@ -153,6 +158,22 @@ class Pen extends Shape {
       context.lineTo(to.x, to.y);
       from = to;
     }
+    context.stroke();
+  }
+}
+
+class Circle extends Shape {
+  constructor(x, y) {
+    super(x, y);
+  }
+
+  draw(context) {
+    var dX = this.endX - this.startX;
+    var dY = this.endY - this.startY;
+    var radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
+
+    context.beginPath();
+    context.arc(this.startX, this.startY, radius, 0, 2*Math.PI, false);
     context.stroke();
   }
 }
