@@ -11,52 +11,54 @@
   </head>
   <body>
 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
 
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" id="pen" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selected">Pen</span><span class="caret"></span></a>
-                <ul id="shapeSelector" class="dropdown-menu">
-                  <li><a href="#" id="pen">Pen</a></li>
-                  <li><a href="#" id="line">Line</a></li>
-                  <li><a href="#" id="rect">Rectangle</a></li>
-                  <li><a href="#" id="circle">Circle</a></li>
-                </ul>
-              </li>
-            </ul>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" id="pen" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selected">Pen</span><span class="caret"></span></a>
+              <ul id="shapeSelector" class="dropdown-menu">
+                <li><a href="#" id="pen">Pen</a></li>
+                <li><a href="#" id="line">Line</a></li>
+                <li><a href="#" id="rect">Rectangle</a></li>
+                <li><a href="#" id="circle">Circle</a></li>
+              </ul>
+            </li>
+          </ul>
 
-            <div class="navbar-right">
-              <div class="btn-group btn-group-lg colorButtons" role="group">
-                <button type="button" id="black" class="btn active black-backround" name="pen">Black</button>
-                <button type="button" id="blue" class="btn btn-primary" name="line">Blue</button>
-                <button type="button" id="red" class="btn btn-danger" name="rect">Red</button>
-                <button type="button" id="green" class="btn btn-success" name="circle">Green</button>
-              </div>
+          <div class="navbar-right">
+            <div class="btn-group btn-group-lg colorButtons" role="group">
+              <button type="button" id="black" class="btn active black-backround" name="pen">Black</button>
+              <button type="button" id="blue" class="btn btn-primary" name="line">Blue</button>
+              <button type="button" id="red" class="btn btn-danger" name="rect">Red</button>
+              <button type="button" id="green" class="btn btn-success" name="circle">Green</button>
             </div>
+          </div>
+        </div><!-- /.navbar-collapse -->
 
 
-          </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
-
-        </div><!-- /.container-fluid -->
-      </nav>
-
-
-    <div class="container">
-      <canvas id="myCanvas" width="800" height="400">
-      Your browser does not support the HTML5 canvas tag.
-      </canvas>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <canvas id="myCanvas" class="white" width="800" height="400">
+            Your browser does not support the HTML5 canvas tag.
+          </canvas>
+        </div>
+      </div>
     </div>
+
   </body>
 </html>

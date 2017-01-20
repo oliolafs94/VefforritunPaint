@@ -1,8 +1,20 @@
+
+body {
+  background-image: url("dickbutt.jpg") !important;
+  background-size:     cover;              
+  background-repeat:   no-repeat;
+  background-position: center center;
+}
+
 #myCanvas {
   border: 1px solid #d3d3d3;
 }
 
 .black-backround {
   background-color: #2b2f35;
-  color: #ffffff;;
+  color: #ffffff;
+}
+
+.white {
+  background-color: #ffffff;
 }
