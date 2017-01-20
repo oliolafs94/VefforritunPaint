@@ -21,19 +21,19 @@ $(document).ready(function () {
     switch(settings.nextObject) {
 
       case("line"):
-        settings.currentShape = new Line(e.offsetX, e.offsetY);
+        settings.currentShape = new Line(e.offsetX, e.offsetY, settings.nextColor);
         break;
 
       case("pen"):
-        settings.currentShape = new Pen(e.offsetX, e.offsetY);
+        settings.currentShape = new Pen(e.offsetX, e.offsetY, settings.nextColor);
         break;
 
       case("circle"):
-        settings.currentShape = new Circle(e.offsetX, e.offsetY);
+        settings.currentShape = new Circle(e.offsetX, e.offsetY, settings.nextColor);
         break;
 
       case("rect"):
-        settings.currentShape = new Rect(e.offsetX, e.offsetY);
+        settings.currentShape = new Rect(e.offsetX, e.offsetY, settings.nextColor);
         break;
 
     }
@@ -148,11 +148,12 @@ function drawAll(context) {
 // TODO: get ES6 support so we can move these to their own files.
 //       ES6 seems to be required for referencing other files.
 class Shape {
-  constructor(x, y) {
+  constructor(x, y, color) {
     this.startX = x;
     this.startY = y;
     this.endX = undefined;
     this.endY = undefined;
+    this.color = color;
     this.deleted = false;
   }
 
@@ -163,32 +164,34 @@ class Shape {
 }
 
 class Rect extends Shape{
-  constructor(x, y) {
-    super(x, y);
+  constructor(x, y, color) {
+    super(x, y, color);
   }
 
   draw(context) {
+    context.strokeStyle = this.color;
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
   }
 }
 
 
 class Line extends Shape {
-  constructor(x, y) {
-    super(x, y);
+  constructor(x, y, color) {
+    super(x, y, color);
   }
 
   draw(context) {
     context.beginPath();
     context.moveTo(this.startX, this.startY);
     context.lineTo(this.endX, this.endY);
+    context.strokeStyle = this.color;
     context.stroke();
   }
 }
 
 class Pen extends Shape {
-  constructor(x, y) {
-    super(x, y);
+  constructor(x, y, color) {
+    super(x, y, color);
     this.points = [];
   }
 
@@ -212,13 +215,14 @@ class Pen extends Shape {
       context.lineTo(to.x, to.y);
       from = to;
     }
+    context.strokeStyle = this.color;
     context.stroke();
   }
 }
 
 class Circle extends Shape {
-  constructor(x, y) {
-    super(x, y);
+  constructor(x, y, color) {
+    super(x, y, color);
   }
 
   draw(context) {
@@ -228,6 +232,7 @@ class Circle extends Shape {
 
     context.beginPath();
     context.arc(this.startX, this.startY, radius, 0, 2*Math.PI, false);
+    context.strokeStyle = this.color;
     context.stroke();
   }
 }
