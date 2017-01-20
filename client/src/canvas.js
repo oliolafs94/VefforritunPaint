@@ -155,12 +155,13 @@ function redo() {
   drawAll(settings.context);
 
 }
+
 /**
  * Clear the canvas and draw every shape in settings.shapes
  * TODO color of object needs to be added to events array
  */
 function drawAll(context) {
-  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
+  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height);
 
   for(var i = 0; i < settings.shapes.length; i++) {
     var shape = settings.shapes[i];
@@ -188,8 +189,10 @@ class Shape {
   }
 
   setEnd(x, y) {
-    this.endX = x;
-    this.endY = y;
+    if(x && y) {  // Both contain new values
+      this.endX = x;
+      this.endY = y;
+    }
   }
 }
 
