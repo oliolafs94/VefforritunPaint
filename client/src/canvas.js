@@ -62,13 +62,11 @@ $(document).ready(function () {
 
       if(e.ctrlKey) {                                           // ctrl is held
 
-        if(e.which == 90 && settings.events.length != 0) {      // z was pressed and there are active shapes
-          var event = settings.events.pop();
-          undo(event);
+        if(e.which == 90) {      // z was pressed and there are active shapes
+          undo();
         }
-        else if(e.which == 89 && settings.undone.length != 0) { // y was pressed and there are undone shapes
-          var event = settings.undone.pop();                     // move shape from undone back to active stack
-          redo(event)                                           // redraw canvas
+        else if(e.which == 89) { // y was pressed and there are undone shapes
+          redo()                                           // redraw canvas
         }
       }
   });
@@ -100,49 +98,60 @@ $(document).ready(function () {
       var idClicked = e.target.id;
 
       if(idClicked == "undoButton"){
-        var event = settings.events.pop();
-        undo(event);
+        undo();
       }
       else if(idClicked == "redoButton"){
-        var event = settings.undone.pop();
-        redo(event);
+        redo();
       }
   });
 
 });
 
-function undo(event) {
+function undo() {
 
-  if(event.command === "create") {
-    settings.shapes[event.shapeID].deleted = true;
-    settings.undone.push(event);          // move shape from active stack to undone stack
-  }
-  else if(event.command === "delete") {
-    settings.shapes[event.shapeID].deleted = false;
-    settings.undone.push(event);
-  }
-  else if(event.command === "move") {
-    console.log("NOT IMPLEMENTED")
+  if(settings.events.length != 0){
+
+    var event = settings.events.pop();
+
+    if(event.command === "create") {
+      settings.shapes[event.shapeID].deleted = true;
+      settings.undone.push(event);          // move shape from active stack to undone stack
+    }
+    else if(event.command === "delete") {
+      settings.shapes[event.shapeID].deleted = false;
+      settings.undone.push(event);
+    }
+    else if(event.command === "move") {
+      console.log("NOT IMPLEMENTED")
+    }
+
   }
 
-  drawAll(settings.context);                            // redraw canvas
+  drawAll(settings.context);              // redraw canvas
+
 }
 
-function redo(event) {
+function redo() {
 
-  if(event.command === "create") {
-    settings.shapes[event.shapeID].deleted = false;
-    settings.events.push(event);
-  }
-  else if(event.command === "delete") {
-    settings.shapes[event.shapeID].deleted = true;
-    settings.events.push(event);
-  }
-  else if(event.command === "move") {
-    console.log("NOT IMPLEMENTED");
-  }
+  if(settings.undone.length != 0){
 
+    var event = settings.undone.pop();                     // move shape from undone back to active stack
+
+    if(event.command === "create") {
+      settings.shapes[event.shapeID].deleted = false;
+      settings.events.push(event);
+    }
+    else if(event.command === "delete") {
+      settings.shapes[event.shapeID].deleted = true;
+      settings.events.push(event);
+    }
+    else if(event.command === "move") {
+      console.log("NOT IMPLEMENTED");
+    }
+  }
+  
   drawAll(settings.context);
+
 }
 /**
  * Clear the canvas and draw every shape in settings.shapes
