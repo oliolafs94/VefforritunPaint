@@ -63,11 +63,11 @@ $(document).ready(function () {
       if(e.ctrlKey) {                                           // ctrl is held
 
         if(e.which == 90 && settings.events.length != 0) {      // z was pressed and there are active shapes
-          var event = settings.events.pop()
+          var event = settings.events.pop();
           undo(event);
         }
         else if(e.which == 89 && settings.undone.length != 0) { // y was pressed and there are undone shapes
-          var event = settings.undone.pop()                     // move shape from undone back to active stack
+          var event = settings.undone.pop();                     // move shape from undone back to active stack
           redo(event)                                           // redraw canvas
         }
       }
@@ -93,6 +93,20 @@ $(document).ready(function () {
 
       $(this).addClass("active").siblings().removeClass("active");
 
+  });
+
+  $(".redoButtons > .btn").click(function(e) {
+
+      var idClicked = e.target.id;
+
+      if(idClicked == "undoButton"){
+        var event = settings.events.pop();
+        undo(event);
+      }
+      else if(idClicked == "redoButton"){
+        var event = settings.undone.pop();
+        redo(event);
+      }
   });
 
 });
@@ -132,6 +146,7 @@ function redo(event) {
 }
 /**
  * Clear the canvas and draw every shape in settings.shapes
+ * TODO color of object needs to be added to events array
  */
 function drawAll(context) {
   context.clearRect(0, 0, settings.canvas.width, settings.canvas.height); //so the line follows the mouse and redraws itself on every mousemove
