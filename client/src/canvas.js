@@ -1,10 +1,10 @@
 //import shape from "shape.js"
 var settings = {
-  canvas: undefined,    // Gets set when the document is ready
-  context: undefined,
+  canvas: null,    // Gets set when the document is ready
+  context: null,
   nextObject: "pen",
   nextColor: "black",
-  currentShape: undefined,
+  currentShape: null,
   shapes: [],
   events: [],
   undone: []    // Stack containing undone actions
@@ -40,17 +40,20 @@ $(document).ready(function () {
   });
 
   $(settings.canvas).mouseup(function(e) {
-    settings.shapes.push(settings.currentShape);
-    settings.events.push( {command: "create", shapeID: settings.shapes.length-1});
+    
+    if(settings.currentShape != null) {
+      settings.shapes.push(settings.currentShape);
+      settings.events.push( {command: "create", shapeID: settings.shapes.length-1});
+    }
 
-    settings.currentShape = undefined;   // End any ongoing shape operations
+    settings.currentShape = null;   // End any ongoing shape operations
     settings.undone = [];
   });
 
   $(settings.canvas).mousemove(function(e) {
     var shape = settings.currentShape;
 
-    if(shape !== undefined) {
+    if(shape != null) {
       shape.setEnd(e.offsetX, e.offsetY);
       drawAll(settings.context);
       shape.draw(settings.context);
@@ -149,7 +152,7 @@ function redo() {
       console.log("NOT IMPLEMENTED");
     }
   }
-  
+
   drawAll(settings.context);
 
 }
@@ -175,8 +178,8 @@ class Shape {
   constructor(x, y, color) {
     this.startX = x;
     this.startY = y;
-    this.endX = undefined;
-    this.endY = undefined;
+      this.endX = null;
+    this.endY = null;
     this.color = color;
     this.deleted = false;
   }
