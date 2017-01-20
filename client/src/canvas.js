@@ -117,7 +117,7 @@ function undo() {
 
     if(event.command === "create") {
       settings.shapes[event.shapeID].deleted = true;
-      settings.undone.push(event);  // move shape from active stack to undone stack
+      settings.undone.push(event);
     }
     else if(event.command === "delete") {
       settings.shapes[event.shapeID].deleted = false;
@@ -137,7 +137,7 @@ function redo() {
 
   if(settings.undone.length != 0){
 
-    var event = settings.undone.pop();  // move shape from undone back to active stack
+    var event = settings.undone.pop();
 
     if(event.command === "create") {
       settings.shapes[event.shapeID].deleted = false;
