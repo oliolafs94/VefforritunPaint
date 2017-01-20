@@ -71,33 +71,25 @@ $(document).ready(function () {
       }
   });
 
-  //Sets which shape will be drawn next.
-  $(".shapeButtons > .btn").click(function(e) {
+
+  //Sets which shape will be drawn next
+  $(".dropdown-menu li a").click(function(e) {
+    var idClicked = e.target.id;
+
+    settings.nextObject = idClicked;
+
+    $('.selected').text($(this).text());
+
+  });
+
+  //Sets which color will be used next
+  $(".colorButtons > .btn").click(function(e) {
 
       var idClicked = e.target.id;
-      $(this).addClass("btn-primary").siblings().removeClass("btn-primary");
-      $("#penButton").addClass("btn-default");
+      settings.nextColor = idClicked;
 
 
-      switch(idClicked) {
-
-        case("penButton"):
-          settings.nextObject = "pen";
-          break;
-
-        case("lineButton"):
-          settings.nextObject = "line";
-          break;
-
-        case("rectButton"):
-          settings.nextObject = "rect";
-          break;
-
-        case("circleButton"):
-          settings.nextObject = "circle";
-          break;
-
-      }
+      $(this).addClass("active").siblings().removeClass("active");
 
   });
 

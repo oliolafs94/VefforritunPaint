@@ -1,3 +1,8 @@
 #myCanvas {
   border: 1px solid #d3d3d3;
 }
+
+#blackButton {
+  background-color: #e7e7e7;
+  color: black;
+}

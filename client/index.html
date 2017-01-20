@@ -10,20 +10,48 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container col-md-12">
-      <div class="page-header">
-        <h1>Temp header</h1>
-      </div>
-    </div>
 
-    <div class="container">
-      <div class="btn-group btn-group-lg shapeButtons" role="group">
-        <button type="button" id="penButton" class="btn btn-primary" name="pen">Pen</button>
-        <button type="button" id="lineButton" class="btn btn-default" name="line">Line</button>
-        <button type="button" id="rectButton" class="btn btn-default" name="rect">Rectangle</button>
-        <button type="button" id="circleButton" class="btn btn-default" name="circle">Circle</button>
-      </div>
-    </div>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" id="pen" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="selected">Pen</span><span class="caret"></span></a>
+                <ul id="shapeSelector" class="dropdown-menu">
+                  <li><a href="#" id="pen">Pen</a></li>
+                  <li><a href="#" id="line">Line</a></li>
+                  <li><a href="#" id="rect">Rectangle</a></li>
+                  <li><a href="#" id="circle">Circle</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="navbar-right">
+              <div class="btn-group btn-group-lg colorButtons" role="group">
+                <button type="button" id="blackButton" class="btn active" name="pen">Black</button>
+                <button type="button" id="blueButton" class="btn btn-primary" name="line">Blue</button>
+                <button type="button" id="redButton" class="btn btn-danger" name="rect">Red</button>
+                <button type="button" id="greenButton" class="btn btn-success" name="circle">Green</button>
+              </div>
+            </div>
+
+
+          </div><!-- /.navbar-collapse -->
+
+
+        </div><!-- /.container-fluid -->
+      </nav>
+
 
     <div class="container">
       <canvas id="myCanvas" width="800" height="400">
