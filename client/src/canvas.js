@@ -38,7 +38,7 @@ $(document).ready(function () {
     }
   });
 
-  $(settings.canvas).mouseup(function(e) {
+  $(settings.canvas).mouseup(function() {
 
     if(settings.currentShape != null) {
       settings.shapes.push(settings.currentShape);
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     settings.nextObject = idClicked;
 
-    $('.selected').text($(this).text());
+    $(".selected").text($(this).text());
 
   });
 
@@ -99,10 +99,10 @@ $(document).ready(function () {
 
       var idClicked = e.target.id;
 
-      if(idClicked == "undoButton"){
+      if(idClicked == "undoButton") {
         undo();
       }
-      else if(idClicked == "redoButton"){
+      else if(idClicked == "redoButton") {
         redo();
       }
   });
