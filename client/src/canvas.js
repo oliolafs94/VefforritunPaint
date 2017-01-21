@@ -20,9 +20,10 @@ function select(e) {
     if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
       console.log("selected " + i);
       shape.selected = true;
-      break;  // Only select one per click.
+      return true;  // Something was selected
     }
   }
+  return false;
 }
 
 function deselectAll() {
@@ -130,8 +131,9 @@ $(document).ready(function () {
         break;
 
       case("select"):
-        settings.moveCoords = new Line(e.offsetX, e.offsetY);
-        select(e);
+        if(select(e)) {
+          settings.moveCoords = new Line(e.offsetX, e.offsetY);
+        }
         break;
     }
   });
