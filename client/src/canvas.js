@@ -10,13 +10,25 @@ var settings = {
 };
 
 function select(e) {
+
+  if(!e.ctrlKey) { // Clear selection if user is not holding ctrl
+    deselectAll();
+  }
+
   for(let i = settings.shapes.length-1; i >= 0; i--) {  // iterate from newest to oldest shape
     let shape = settings.shapes[i];
     if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
+      console.log("selected " + i);
       shape.selected = true;
-      console.log("selected!");
       break;  // Only select one per click.
     }
+  }
+}
+
+function deselectAll() {
+  for(let i = 0; i < settings.shapes.length; i++) {
+    if(settings.shapes[i].selected === true) {console.log("Cleared " + i)}
+    settings.shapes[i].selected = false;
   }
 }
 
