@@ -88,5 +88,5 @@ app.post("/api/templates", (req, res) => {
 
 // Start the server
 app.listen(PORT, function () {
-    console.log('Express server listening on localhost:%d', PORT);
+    console.log("Express server listening on localhost:%d", PORT);
 });
