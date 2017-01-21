@@ -9,13 +9,85 @@ var settings = {
   undone: []          // Stack containing undone actions
 };
 
+function select(e) {
+  for(let i = settings.shapes.length-1; i >= 0; i--) {  // iterate from newest to oldest shape
+    let shape = settings.shapes[i];
+    if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
+      shape.selected = true;
+      break;  // Only select one per click.
+    }
+  }
+}
+
+function undo() {
+
+  if(settings.events.length != 0){
+
+    var event = settings.events.pop();
+
+    if(event.command === "create") {
+      settings.shapes[event.shapeID].deleted = true;
+      settings.undone.push(event);
+    }
+    else if(event.command === "delete") {
+      settings.shapes[event.shapeID].deleted = false;
+      settings.undone.push(event);
+    }
+    else if(event.command === "move") {
+      console.log("NOT IMPLEMENTED")
+    }
+
+  }
+
+  drawAll(settings.context);  // redraw canvas
+}
+
+function redo() {
+
+  if(settings.undone.length != 0){
+
+    var event = settings.undone.pop();
+
+    if(event.command === "create") {
+      settings.shapes[event.shapeID].deleted = false;
+      settings.events.push(event);
+    }
+    else if(event.command === "delete") {
+      settings.shapes[event.shapeID].deleted = true;
+      settings.events.push(event);
+    }
+    else if(event.command === "move") {
+      console.log("NOT IMPLEMENTED");
+    }
+  }
+
+  drawAll(settings.context);
+}
+
+/**
+ * Clear the canvas and draw every shape in settings.shapes
+ * TODO color of object needs to be added to events array
+ */
+function drawAll(context) {
+  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height);
+
+  for(var i = 0; i < settings.shapes.length; i++) {
+    var shape = settings.shapes[i];
+    if(!shape.deleted) {
+      shape.draw(context);
+    }
+  }
+}
 
 $(document).ready(function () {
-
   settings.canvas = document.getElementById("myCanvas");
   settings.context = settings.canvas.getContext("2d");
 
   $(settings.canvas).mousedown(function(e) {
+
+    if(settings.nextObject === "select") {  // if select tool is active
+      select(e);
+    }
 
     switch(settings.nextObject) {
 
@@ -109,68 +181,6 @@ $(document).ready(function () {
 
 });
 
-function undo() {
-
-  if(settings.events.length != 0){
-
-    var event = settings.events.pop();
-
-    if(event.command === "create") {
-      settings.shapes[event.shapeID].deleted = true;
-      settings.undone.push(event);
-    }
-    else if(event.command === "delete") {
-      settings.shapes[event.shapeID].deleted = false;
-      settings.undone.push(event);
-    }
-    else if(event.command === "move") {
-      console.log("NOT IMPLEMENTED")
-    }
-
-  }
-
-  drawAll(settings.context);  // redraw canvas
-
-}
-
-function redo() {
-
-  if(settings.undone.length != 0){
-
-    var event = settings.undone.pop();
-
-    if(event.command === "create") {
-      settings.shapes[event.shapeID].deleted = false;
-      settings.events.push(event);
-    }
-    else if(event.command === "delete") {
-      settings.shapes[event.shapeID].deleted = true;
-      settings.events.push(event);
-    }
-    else if(event.command === "move") {
-      console.log("NOT IMPLEMENTED");
-    }
-  }
-
-  drawAll(settings.context);
-
-}
-
-/**
- * Clear the canvas and draw every shape in settings.shapes
- * TODO color of object needs to be added to events array
- */
-function drawAll(context) {
-  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height);
-
-  for(var i = 0; i < settings.shapes.length; i++) {
-    var shape = settings.shapes[i];
-    if(!shape.deleted) {
-      shape.draw(context);
-    }
-  }
-}
-
 /**
 Base shape object used for inheritance by all specific canvas shapes
 Contains start coordinates, end coordinates, color and a soft deletion flag
@@ -209,6 +219,12 @@ class Rect extends Shape {
   draw(context) {
     context.strokeStyle = this.color;
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
+  }
+
+  contains(x, y) {
+    let withinX = this.startX <= x && this.endX >= x;  // x is on rect length
+    let withinY = this.startY <= y && this.endY >= y;  // y is on rect height
+    return withinX && withinY;
   }
 }
 
