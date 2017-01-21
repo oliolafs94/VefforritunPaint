@@ -14,6 +14,7 @@ function select(e) {
     let shape = settings.shapes[i];
     if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
       shape.selected = true;
+      console.log("selected!");
       break;  // Only select one per click.
     }
   }
@@ -221,6 +222,7 @@ class Rect extends Shape {
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
   }
 
+  // Checks whether or not the given coordinates are within the square
   contains(x, y) {
     let withinX = this.startX <= x && this.endX >= x;  // x is on rect length
     let withinY = this.startY <= y && this.endY >= y;  // y is on rect height
@@ -285,19 +287,29 @@ class Pen extends Shape {
 class Circle extends Shape {
   constructor(x, y, color) {
     super(x, y, color);
+    this.radius = null;
   }
 
   // Draw the circle
   // Centers on start coordinates, sets radius to distance from start to end
   // Could be modified to center on a midpoint between the two
   draw(context) {
-    var dX = this.endX - this.startX;
-    var dY = this.endY - this.startY;
-    var radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
+    let dX = this.endX - this.startX;
+    let dY = this.endY - this.startY;
+    this.radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
 
     context.beginPath();
-    context.arc(this.startX, this.startY, radius, 0, 2*Math.PI, false);
+    context.arc(this.startX, this.startY, this.radius, 0, 2*Math.PI, false);
     context.strokeStyle = this.color;
     context.stroke();
+  }
+
+  // Checks whether or not the given coordinates are within the square
+  // is the distance from center to coord less than the radius?
+  contains(x, y) {
+    let dX = x - this.startX;
+    let dY = y - this.startY;
+    let dist = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+    return dist <= this.radius;
   }
 }
