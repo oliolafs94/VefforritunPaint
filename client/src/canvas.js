@@ -82,6 +82,12 @@ function offsetShapes() {
   let move = settings.moveCoords;
   let xOffset = move.endX - move.startX;
   let yOffset = move.endY - move.startY;
+
+  // then reset the offsets start coordinates
+  // (move was copied by reference)
+  move.startX = move.endX;
+  move.startY = move.endY;
+
   for(let i = 0; i < settings.shapes.length; i++) {
     let shape = settings.shapes[i];
     console.log("checking " + i);
@@ -89,6 +95,7 @@ function offsetShapes() {
       shape.move(xOffset, yOffset);
     }
   }
+  drawAll(settings.context);
 }
 
 /**
@@ -237,6 +244,17 @@ class Shape {
       this.endY = y;
     }
   }
+
+  // Add the offset to every coordinate in this shape
+  // Overload for shapes that have overloaded coordinate behavior
+  move(x, y) {
+    console.log(x, y);
+    this.startX += x;
+    this.startY += y;
+
+    this.endX += x;
+    this.endY += y;
+  }
 }
 
 /**
@@ -265,10 +283,6 @@ class Rect extends Shape {
                || (this.startY >= y && y >= this.endY); // y is on the rect height
 
     return withinX && withinY;
-  }
-
-  move(x, y) {
-    console.log(x + " " + y);
   }
 }
 
