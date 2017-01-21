@@ -255,6 +255,13 @@ class Shape {
     this.endX += x;
     this.endY += y;
   }
+
+  // Should be overwritten by all shapes!
+  contains() {
+    let msg = "The contains(x, y) function was not overloaded!"
+            + "It must be overloaded by all shapes"
+    throw new Error(msg);
+  }
 }
 
 /**
@@ -350,12 +357,17 @@ class Circle extends Shape {
   // Centers on start coordinates, sets radius to distance from start to end
   // Could be modified to center on a midpoint between the two
   draw(context) {
-    let dX = this.endX - this.startX;
-    let dY = this.endY - this.startY;
+
+    let centerX = (this.startX + this.endX)/2;  // Center to draw from
+    let centerY = (this.startY + this.endY)/2;
+
+    let dX = Math.abs(this.endX - centerX);
+    let dY = Math.abs(this.endY - centerY);
+    
     this.radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
 
     context.beginPath();
-    context.arc(this.startX, this.startY, this.radius, 0, 2*Math.PI, false);
+    context.ellipse(centerX, centerY, dX, dY, 0, 0, 2 * Math.PI);
     context.strokeStyle = this.color;
     context.stroke();
   }
