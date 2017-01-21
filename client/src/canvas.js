@@ -71,7 +71,13 @@ $(document).ready(function () {
       }
   });
 
+  $(".nav .nextbutton").click(function(e) {
+    var idClicked = e.target.id;
 
+    settings.nextObject = idClicked;
+
+    console.log(idClicked);
+});
   //Sets which shape will be drawn next
   $(".dropdown-menu li a").click(function(e) {
     var idClicked = e.target.id;
@@ -149,7 +155,7 @@ function redo() {
       console.log("NOT IMPLEMENTED");
     }
   }
-  
+
   drawAll(settings.context);
 
 }
