@@ -227,51 +227,6 @@ $(document).ready(function () {
 
 });
 
-function undo() {
-
-  if(settings.events.length != 0){
-
-    var event = settings.events.pop();
-
-    if(event.command === "create") {
-      settings.shapes[event.shapeID].deleted = true;
-      settings.undone.push(event);          // move shape from active stack to undone stack
-    }
-    else if(event.command === "delete") {
-      settings.shapes[event.shapeID].deleted = false;
-      settings.undone.push(event);
-    }
-    else if(event.command === "move") {
-      console.log("NOT IMPLEMENTED")
-    }
-
-  }
-
-  drawAll(settings.context);              // redraw canvas
-}
-
-function redo() {
-
-  if(settings.undone.length != 0){
-
-    var event = settings.undone.pop();                     // move shape from undone back to active stack
-
-    if(event.command === "create") {
-      settings.shapes[event.shapeID].deleted = false;
-      settings.events.push(event);
-    }
-    else if(event.command === "delete") {
-      settings.shapes[event.shapeID].deleted = true;
-      settings.events.push(event);
-    }
-    else if(event.command === "move") {
-      console.log("NOT IMPLEMENTED");
-    }
-  }
-
-  drawAll(settings.context);
-
-}
 /**
 Base shape object used for inheritance by all specific canvas shapes
 Contains start coordinates, end coordinates, color and a soft deletion flag
@@ -414,7 +369,7 @@ class Circle extends Shape {
 
     let dX = Math.abs(this.endX - centerX);
     let dY = Math.abs(this.endY - centerY);
-    
+
     this.radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
 
     context.beginPath();
