@@ -256,8 +256,14 @@ class Rect extends Shape {
 
   // Checks whether or not the given coordinates are within the square
   contains(x, y) {
-    let withinX = this.startX <= x && this.endX >= x;  // x is on rect length
-    let withinY = (this.startY <= y && this.endY >= y);  // y is on rect height
+
+    // We must take into account that the end points
+    // may or may not be above the start points
+    let withinX = (this.startX <= x && x <= this.endX)
+               || (this.startX >= x && x >= this.endX); // x is on rect length
+    let withinY = (this.startY <= y && y <= this.endY)
+               || (this.startY >= y && y >= this.endY); // y is on the rect height
+
     return withinX && withinY;
   }
 
