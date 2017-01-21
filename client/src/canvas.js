@@ -4,13 +4,13 @@ var settings = {
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
   currentShape: null, // Shape currently being created by user
+  moveCoords: null,   // Track movement of a selected shape
   shapes: [],         // All shapes on canvas, including deleted
   events: [],         // Stack that tracks all actions on shapes (create, delete, move, ...)
   undone: []          // Stack containing undone actions
 };
 
 function select(e) {
-
   if(!e.ctrlKey) { // Clear selection if user is not holding ctrl
     deselectAll();
   }
@@ -77,6 +77,19 @@ function redo() {
   drawAll(settings.context);
 }
 
+function offsetShapes() {
+  let move = settings.moveCoords;
+  let xOffset = move.endX - move.startX;
+  let yOffset = move.endY - move.startY;
+  for(let i = 0; i < settings.shapes.length; i++) {
+    let shape = settings.shapes[i];
+    console.log("checking " + i);
+    if(shape.selected) {
+      shape.move(xOffset, yOffset);
+    }
+  }
+}
+
 /**
  * Clear the canvas and draw every shape in settings.shapes
  * TODO color of object needs to be added to events array
@@ -98,10 +111,6 @@ $(document).ready(function () {
 
   $(settings.canvas).mousedown(function(e) {
 
-    if(settings.nextObject === "select") {  // if select tool is active
-      select(e);
-    }
-
     switch(settings.nextObject) {
 
       case("line"):
@@ -120,27 +129,36 @@ $(document).ready(function () {
         settings.currentShape = new Rect(e.offsetX, e.offsetY, settings.nextColor);
         break;
 
+      case("select"):
+        settings.moveCoords = new Line(e.offsetX, e.offsetY);
+        select(e);
+        break;
     }
   });
 
   $(settings.canvas).mouseup(function() {
 
-    if(settings.currentShape != null) {
+    if(settings.currentShape !== null) {
       settings.shapes.push(settings.currentShape);
       settings.events.push( {command: "create", shapeID: settings.shapes.length-1});
     }
 
     settings.currentShape = null; // End any ongoing shape operations
+    settings.moveCoords = null;
     settings.undone = [];         // Clear undone stack since a new event occurred
   });
 
   $(settings.canvas).mousemove(function(e) {
     var shape = settings.currentShape;
 
-    if(shape != null) {
+    if(shape !== null) {
       shape.setEnd(e.offsetX, e.offsetY);
       drawAll(settings.context);
       shape.draw(settings.context);
+    }
+    else if(settings.moveCoords !== null) {
+      settings.moveCoords.setEnd(e.offsetX, e.offsetY);
+      offsetShapes();
     }
   });
 
@@ -237,8 +255,12 @@ class Rect extends Shape {
   // Checks whether or not the given coordinates are within the square
   contains(x, y) {
     let withinX = this.startX <= x && this.endX >= x;  // x is on rect length
-    let withinY = this.startY <= y && this.endY >= y;  // y is on rect height
+    let withinY = (this.startY <= y && this.endY >= y);  // y is on rect height
     return withinX && withinY;
+  }
+
+  move(x, y) {
+    console.log(x + " " + y);
   }
 }
 
