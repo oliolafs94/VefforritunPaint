@@ -142,6 +142,16 @@ $(document).ready(function () {
           settings.moveCoords = new Line(e.offsetX, e.offsetY);
         }
         break;
+
+      case("text"):
+        var textarea = document.getElementById("textarea");
+
+        textarea.hidden = false;
+        textarea.style.position = "absolute";
+        textarea.style.left = e.offsetX +"px";
+        textarea.style.top = e.offsetY + "px";
+        textarea.style.zIndex = settings.canvas.style.zIndex+1; // Places the textarea on top of the canvas
+        break;
     }
   });
 
@@ -184,13 +194,6 @@ $(document).ready(function () {
         }
       }
   });
-
-  $(".nav .nextbutton").click(function(e) {
-    var idClicked = e.target.id;
-
-    settings.nextObject = idClicked;
-});
-  //Sets which shape will be drawn next
 
   // Sets which shape will be drawn next
   $(".dropdown-menu li a").click(function(e) {
