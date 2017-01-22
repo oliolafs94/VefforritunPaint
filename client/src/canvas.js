@@ -90,7 +90,6 @@ function offsetShapes() {
 
   for(let i = 0; i < settings.shapes.length; i++) {
     let shape = settings.shapes[i];
-    console.log("checking " + i);
     if(shape.selected) {
       shape.move(xOffset, yOffset);
     }
@@ -257,7 +256,6 @@ class Shape {
   // Add the offset to every coordinate in this shape
   // Overload for shapes that have overloaded coordinate behavior
   move(x, y) {
-    console.log(x, y);
     this.startX += x;
     this.startY += y;
 
@@ -296,7 +294,7 @@ class Rect extends Shape {
     let withinX = (this.startX <= x && x <= this.endX)
                || (this.startX >= x && x >= this.endX); // x is on rect length
     let withinY = (this.startY <= y && y <= this.endY)
-               || (this.startY >= y && y >= this.endY); // y is on the rect height
+               || (this.startY >= y && y >= this.endY); // y is on rect height
 
     return withinX && withinY;
   }
@@ -359,34 +357,52 @@ class Pen extends Shape {
 class Circle extends Shape {
   constructor(x, y, color) {
     super(x, y, color);
-    this.radius = null;
+    this.center = null;    // center coordinates
+    this.rX = null;        // x radius
+    this.rY = null;        // y radius
+  }
+
+  setEnd(x, y) {
+    super.setEnd(x, y);
+    this.center = {
+      x: (this.startX + this.endX)/2,
+      y: (this.startY + this.endY)/2
+    }
+
+    this.rX = Math.abs(this.endX - this.center.x);
+    this.rY = Math.abs(this.endY - this.center.y);
   }
 
   // Draw the circle
   // Centers on start coordinates, sets radius to distance from start to end
   // Could be modified to center on a midpoint between the two
   draw(context) {
-
-    let centerX = (this.startX + this.endX)/2;  // Center to draw from
-    let centerY = (this.startY + this.endY)/2;
-
-    let dX = Math.abs(this.endX - centerX);
-    let dY = Math.abs(this.endY - centerY);
-
-    this.radius = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));  //square root of dX squared + dY squared. Pythagoras.
-
     context.beginPath();
-    context.ellipse(centerX, centerY, dX, dY, 0, 0, 2 * Math.PI);
+    context.ellipse(this.center.x, this.center.y, this.rX, this.rY, 0, 0, 2 * Math.PI);
     context.strokeStyle = this.color;
     context.stroke();
   }
 
-  // Checks whether or not the given coordinates are within the square
-  // is the distance from center to coord less than the radius?
+
+  // Checks whether or not the given coordinates are within the circle
   contains(x, y) {
-    let dX = x - this.startX;
-    let dY = y - this.startY;
-    let dist = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
-    return dist <= this.radius;
+
+    /*
+    Calculate the distance from the center as a ratio of radius.
+    pdx + pdy <= 1 for all points within the ellipse.
+    If they are greater that means the coordinates are farther than
+    100% of the radius at that point
+    */
+    let pdx = Math.pow(x - this.center.x, 2) / Math.pow(this.rX, 2);
+    let pdy = Math.pow(y - this.center.y, 2) / Math.pow(this.rY, 2);
+    return pdx + pdy <= 1;
+  }
+
+  move(x, y) {
+    super.move(x, y);
+    this.center = {
+      x: this.center.x + x,
+      y: this.center.y + y
+    }
   }
 }
