@@ -10,6 +10,12 @@ var settings = {
   undone: []          // Stack containing undone actions
 };
 
+function deselectAll() {
+  for(let i = 0; i < settings.shapes.length; i++) {
+    settings.shapes[i].selected = false;
+  }
+}
+
 function select(e) {
   if(!e.ctrlKey) { // Clear selection if user is not holding ctrl
     deselectAll();
@@ -26,10 +32,18 @@ function select(e) {
   return false;
 }
 
-function deselectAll() {
-  for(let i = 0; i < settings.shapes.length; i++) {
-    if(settings.shapes[i].selected === true) {console.log("Cleared " + i)}
-    settings.shapes[i].selected = false;
+/**
+ * Clear the canvas and draw every shape in settings.shapes
+ * TODO color of object needs to be added to events array
+ */
+function drawAll(context) {
+  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height);
+
+  for(var i = 0; i < settings.shapes.length; i++) {
+    var shape = settings.shapes[i];
+    if(!shape.deleted) {
+      shape.draw(context);
+    }
   }
 }
 
@@ -48,7 +62,7 @@ function undo() {
       settings.undone.push(event);
     }
     else if(event.command === "move") {
-      console.log("NOT IMPLEMENTED")
+      console.log("NOT IMPLEMENTED");
     }
 
   }
@@ -95,21 +109,6 @@ function offsetShapes() {
     }
   }
   drawAll(settings.context);
-}
-
-/**
- * Clear the canvas and draw every shape in settings.shapes
- * TODO color of object needs to be added to events array
- */
-function drawAll(context) {
-  context.clearRect(0, 0, settings.canvas.width, settings.canvas.height);
-
-  for(var i = 0; i < settings.shapes.length; i++) {
-    var shape = settings.shapes[i];
-    if(!shape.deleted) {
-      shape.draw(context);
-    }
-  }
 }
 
 $(document).ready(function () {
@@ -266,7 +265,7 @@ class Shape {
   // Should be overwritten by all shapes!
   contains() {
     let msg = "The contains(x, y) function was not overloaded!"
-            + "It must be overloaded by all shapes"
+            + "It must be overloaded by all shapes";
     throw new Error(msg);
   }
 }
@@ -367,7 +366,7 @@ class Circle extends Shape {
     this.center = {
       x: (this.startX + this.endX)/2,
       y: (this.startY + this.endY)/2
-    }
+    };
 
     this.rX = Math.abs(this.endX - this.center.x);
     this.rY = Math.abs(this.endY - this.center.y);
@@ -403,6 +402,6 @@ class Circle extends Shape {
     this.center = {
       x: this.center.x + x,
       y: this.center.y + y
-    }
+    };
   }
 }
