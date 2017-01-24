@@ -6,8 +6,6 @@ var appVars = {
   undone: []              // Stack containing undone actions
 };
 
-
-
 function deselectAll() {
   for(let i = 0; i < appVars.shapes.length; i++) {
     appVars.shapes[i].selected = false;
@@ -92,8 +90,7 @@ function redo() {
   drawAll();
 }
 
-function offsetShapes() {
-  let move = appVars.moveCoords;
+function offsetShapes(move) {
   let xOffset = move.endX - move.startX;
   let yOffset = move.endY - move.startY;
 

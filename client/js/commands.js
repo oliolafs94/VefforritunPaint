@@ -15,7 +15,7 @@ $(document).ready(function () {
   eventVars.context = eventVars.canvas.getContext("2d");
 
   // Send information needed for drawing to the app
-  appVars.canvasDimensions = { width: eventVars.canvas.width, height: eventVars.canvas.height }
+  appVars.canvasDimensions = { width: eventVars.canvas.width, height: eventVars.canvas.height };
   appVars.context = eventVars.context;
 
   $(eventVars.canvas).mousedown(function(e) {
@@ -77,7 +77,7 @@ $(document).ready(function () {
     }
     else if(eventVars.moveCoords !== null) {
       eventVars.moveCoords.setEnd(e.offsetX, e.offsetY);
-      offsetShapes();
+      offsetShapes(eventVars.moveCoords);
     }
   });
 
