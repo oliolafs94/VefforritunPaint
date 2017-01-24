@@ -17,10 +17,8 @@ class Shape {
   }
 
   setEnd(x, y) {
-    if(x && y) {  // Both contain new values
-      this.endX = x;
-      this.endY = y;
-    }
+    this.endX = x;
+    this.endY = y;
   }
 
   // Add the offset to every coordinate in this shape
