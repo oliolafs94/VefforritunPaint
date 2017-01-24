@@ -33,6 +33,7 @@ function select(e) {
 /**
  * Clear the canvas and draw every shape in appVars.shapes
  * TODO color of object needs to be added to events array
+ * fadsgdhfjg
  */
 function drawAll() {
   let dimensions = appVars.canvasDimensions;
