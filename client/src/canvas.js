@@ -3,6 +3,7 @@ var settings = {
   context: null,      // Canvas context
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
+  nextLineWidth: 1,  // Default line width
   currentShape: null, // Shape currently being created by user
   moveCoords: null,   // Track movement of a selected shape
   shapes: [],         // All shapes on canvas, including deleted
@@ -120,19 +121,19 @@ $(document).ready(function () {
     switch(settings.nextObject) {
 
       case("line"):
-        settings.currentShape = new Line(e.offsetX, e.offsetY, settings.nextColor);
+        settings.currentShape = new Line(e.offsetX, e.offsetY, settings.nextColor, settings.nextLineWidth);
         break;
 
       case("pen"):
-        settings.currentShape = new Pen(e.offsetX, e.offsetY, settings.nextColor);
+        settings.currentShape = new Pen(e.offsetX, e.offsetY, settings.nextColor, settings.nextLineWidth);
         break;
 
       case("circle"):
-        settings.currentShape = new Circle(e.offsetX, e.offsetY, settings.nextColor);
+        settings.currentShape = new Circle(e.offsetX, e.offsetY, settings.nextColor, settings.nextLineWidth);
         break;
 
       case("rect"):
-        settings.currentShape = new Rect(e.offsetX, e.offsetY, settings.nextColor);
+        settings.currentShape = new Rect(e.offsetX, e.offsetY, settings.nextColor, settings.nextLineWidth);
         break;
 
       case("select"):
@@ -214,6 +215,14 @@ $(document).ready(function () {
 
   });
 
+  //sets the linewidth
+  $("#linewidth").change(function(e) {
+
+      var value = $("#linewidth").val();
+      settings.nextLineWidth = value;
+  });
+
+  //calls redo or undo if the buttons are pressed
   $(".redoButtons > .btn").click(function(e) {
 
       var idClicked = e.target.id;
@@ -236,10 +245,11 @@ class Shape {
 
   // Takes starting x & y coordinates and shape color
   // Additionally keeps track of soft deletion and possible end coordinates
-  constructor(x, y, color) {
+  constructor(x, y, color, lineWidth) {
     this.startX = x;
     this.startY = y;
     this.color = color;
+    this.lineWidth = lineWidth;
     this.endX = null;
     this.endY = null;
     this.deleted = false;
@@ -276,12 +286,13 @@ Uses standard color, start and end coordinate behavior from super
 Uses own draw function
 **/
 class Rect extends Shape {
-  constructor(x, y, color) {
-    super(x, y, color);
+  constructor(x, y, color, lineWidth) {
+    super(x, y, color, lineWidth);
   }
 
   draw(context) {
     context.strokeStyle = this.color;
+    context.lineWidth = this.lineWidth;
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
   }
 
@@ -305,14 +316,15 @@ Uses standard color, start and end coordinate behavior from super
 Uses own draw function
 **/
 class Line extends Shape {
-  constructor(x, y, color) {
-    super(x, y, color);
+  constructor(x, y, color, lineWidth) {
+    super(x, y, color, lineWidth);
   }
 
   draw(context) {
     context.beginPath();
     context.moveTo(this.startX, this.startY);
     context.lineTo(this.endX, this.endY);
+    context.lineWidth = this.lineWidth;
     context.strokeStyle = this.color;
     context.stroke();
   }
@@ -325,8 +337,8 @@ Tracks an array of end coordinates instead of single
 Uses own draw function
 **/
 class Pen extends Shape {
-  constructor(x, y, color) {
-    super(x, y, color);
+  constructor(x, y, color, lineWidth) {
+    super(x, y, color, lineWidth);
     this.points = [];
   }
 
@@ -347,6 +359,7 @@ class Pen extends Shape {
       context.lineTo(to.x, to.y);
       from = to;
     }
+    context.lineWidth = this.lineWidth;
     context.strokeStyle = this.color;
     context.stroke();
   }
@@ -354,8 +367,8 @@ class Pen extends Shape {
 
 
 class Circle extends Shape {
-  constructor(x, y, color) {
-    super(x, y, color);
+  constructor(x, y, color, lineWidth) {
+    super(x, y, color, lineWidth);
     this.center = null;    // center coordinates
     this.rX = null;        // x radius
     this.rY = null;        // y radius
@@ -378,6 +391,7 @@ class Circle extends Shape {
   draw(context) {
     context.beginPath();
     context.ellipse(this.center.x, this.center.y, this.rX, this.rY, 0, 0, 2 * Math.PI);
+    context.lineWidth = this.lineWidth;
     context.strokeStyle = this.color;
     context.stroke();
   }

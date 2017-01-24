@@ -38,6 +38,13 @@
             </li>
           </ul>
 
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <label for="linewidth" class="col-form-label">Line width</label>
+                <input class="form-control" type="number" value="1" max="20" min="1" id="linewidth">
+            </div>
+          </form>
+
           <div class="navbar-right">
             <div class="btn-group btn-group-lg colorButtons" role="group">
               <button type="button" id="black" class="btn active black-backround" name="pen">Black</button>
@@ -54,14 +61,16 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-12 col-md-12">
           <canvas id="myCanvas" class="white" width="800" height="400">
             Your browser does not support the HTML5 canvas tag.
           </canvas>
-          <div class="col-lg-6 col-md-6 redoButtons">
-            <button type="button" id="undoButton" class="btn btn-default" name="undo">Undo</button>
-            <button type="button" id="redoButton" class="btn btn-default" name="redo">Redo</button>
-          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 redoButtons">
+          <button type="button" id="undoButton" class="btn btn-default" name="undo">Undo</button>
+          <button type="button" id="redoButton" class="btn btn-default" name="redo">Redo</button>
         </div>
       </div>
     </div>
