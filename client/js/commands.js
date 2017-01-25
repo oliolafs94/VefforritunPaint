@@ -40,7 +40,7 @@ $(document).ready(function () {
 
       case("select"):
         if(select(e)) {
-          eventVars.moveCoords = new Line(e.offsetX, e.offsetY);
+          eventVars.moveCoords = new Move(e.offsetX, e.offsetY);
         }
         break;
 
@@ -60,6 +60,9 @@ $(document).ready(function () {
 
     if(eventVars.currentShape !== null && eventVars.currentShape.isValid()) {
       createShape(eventVars.currentShape);
+    }
+    else if(eventVars.moveCoords instanceof Object && eventVars.moveCoords.isValid()) {
+      saveMove(eventVars.moveCoords);
     }
 
     eventVars.currentShape = null; // End any ongoing shape operations
@@ -84,15 +87,15 @@ $(document).ready(function () {
   // This listener is attached to document
   $(document).keydown(function(e) {
 
-      if(e.ctrlKey) {             // ctrl is held
+    if(e.ctrlKey) {             // ctrl is held
 
-        if(e.which == 90) {       // z was pressed
-          undo();
-        }
-        else if(e.which == 89) {  // y was pressed
-          redo();
-        }
+      if(e.which == 90) {       // z was pressed
+        undo();
       }
+      else if(e.which == 89) {  // y was pressed
+        redo();
+      }
+    }
   });
 
   // Sets which shape will be drawn next
@@ -102,38 +105,33 @@ $(document).ready(function () {
     eventVars.nextObject = idClicked;
 
     $(".selected").text($(this).text());
-
   });
 
   // Sets which color will be used next
   $(".colorButtons > .btn").click(function(e) {
+    let idClicked = e.target.id;
+    eventVars.nextColor = idClicked;
 
-      var idClicked = e.target.id;
-      eventVars.nextColor = idClicked;
 
-
-      $(this).addClass("active").siblings().removeClass("active");
-
+    $(this).addClass("active").siblings().removeClass("active");
   });
 
   // sets the linewidth
   $("#linewidth").change(function() {
-
-      var value = $("#linewidth").val();
-      eventVars.nextLineWidth = value;
+    let value = $("#linewidth").val();
+    eventVars.nextLineWidth = value;
   });
 
   // calls redo or undo if the buttons are pressed
   $(".redoButtons > .btn").click(function(e) {
+    let idClicked = e.target.id;
 
-      var idClicked = e.target.id;
-
-      if(idClicked == "undoButton") {
-        undo();
-      }
-      else if(idClicked == "redoButton") {
-        redo();
-      }
+    if(idClicked == "undoButton") {
+      undo();
+    }
+    else if(idClicked == "redoButton") {
+      redo();
+    }
   });
 
 });

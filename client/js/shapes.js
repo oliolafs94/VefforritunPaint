@@ -109,10 +109,27 @@ class Line extends Shape {
 }
 
 /**
+Used for keeping track of dragging movements on the canvas
+so shapes can be moved around
+**/
+class Move extends Line {
+
+  /**
+  The move line needs to set its starting points to its end points in every drawn move
+  for the movement behavior we want.
+  Since the starting points are lost we must remember where the origin was in order to
+  undo moves
+  **/
+  constructor(x, y) {
+    super(x, y);
+
+    this.originX = x;
+    this.originY = y;
+  }
+}
+
+/**
 Freely drawn shape using the pen tool
-Uses standard color and start coordinates from super
-Tracks an array of end coordinates instead of single
-Uses own draw function
 **/
 class Pen extends Shape {
   constructor(x, y, color, lineWidth) {
@@ -145,7 +162,11 @@ class Pen extends Shape {
   }
 }
 
-
+/**
+Ellipse shape
+TODO: implement alternate perfect circle shape when shift is held
+TODO: probably rename to Ellipse
+**/
 class Circle extends Shape {
   constructor(x, y, color, lineWidth) {
     super(x, y, color, lineWidth);
