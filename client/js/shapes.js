@@ -1,11 +1,15 @@
 /**
+  TODO: REFACTOR OBSOLETE COMMENTS
+**/
+
+
+/**
 Base shape object used for inheritance by all specific canvas shapes
 Contains start coordinates, end coordinates, color and a soft deletion flag
 **/
 class Shape {
 
   // Takes starting x & y coordinates and shape color
-  // Additionally keeps track of soft deletion and possible end coordinates
   constructor(x, y, color, lineWidth) {
     this.startX = x;
     this.startY = y;
@@ -37,6 +41,20 @@ class Shape {
     let msg = "The contains(x, y) function was not overloaded!"
             + "It must be overloaded by all shapes";
     throw new Error(msg);
+  }
+
+  // Checks for any null coordinates
+  isValid() {
+    let points = [this.startX, this.startY, this.endX, this.endY];
+    let length = points.length,
+        valid  = true,
+        i = 0;
+    for(i, length; i < length; i++) {
+      if(typeof points[i] !== "number") { // Use typeof instead of null comparisons when possible
+        valid = false;
+      }
+    }
+    return valid;
   }
 }
 
@@ -105,6 +123,8 @@ class Pen extends Shape {
 
   // Set a new point along the pen path
   setEnd(x, y) {
+    this.endX = x;
+    this.endY = y;
     this.points.push({x:x, y:y});
   }
 

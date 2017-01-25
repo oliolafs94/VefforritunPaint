@@ -4,7 +4,7 @@ var eventVars = {
   context: null,      // Canvas context
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
-  nextLineWidth: 1,  // Default line width
+  nextLineWidth: 1,   // Default line width
   currentShape: null, // Shape currently being created by user
   moveCoords: null,   // Track movement of a selected shape
 };
@@ -14,7 +14,7 @@ $(document).ready(function () {
   eventVars.canvas = document.getElementById("myCanvas");
   eventVars.context = eventVars.canvas.getContext("2d");
 
-  // Send information needed for drawing to the app
+  // Send information needed for drawing to the app but keep it at minimum
   appVars.canvasDimensions = { width: eventVars.canvas.width, height: eventVars.canvas.height };
   appVars.context = eventVars.context;
 
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
   $(eventVars.canvas).mouseup(function() {
 
-    if(eventVars.currentShape !== null) {
+    if(eventVars.currentShape !== null && eventVars.currentShape.isValid()) {
       createShape(eventVars.currentShape);
     }
 
