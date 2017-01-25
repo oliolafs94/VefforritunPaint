@@ -106,8 +106,8 @@ function redo() {
         let id = event.shapeIDs[i];
         appVars.shapes[id].move(offset.x, offset.y);
       }
+      appVars.events.push(event);
     }
-    appVars.events.push(event);
   }
 
   drawAll();
