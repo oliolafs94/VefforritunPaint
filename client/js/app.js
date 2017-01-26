@@ -156,10 +156,14 @@ function createShape(shape) {
 }
 
 function colorSelected(color) {
+  let colored = [];
   for(let i = 0; i < appVars.selected.length; i++) {
     let id = appVars.selected[i];
+    let shape = appVars.shapes[id];
+
+    appVars.events.push({command: "color", shapeID: id, new: color, old: shape.color});
     appVars.shapes[id].color = color;
   }
-
+  console.log(appVars.events);
   drawAll();
 }
