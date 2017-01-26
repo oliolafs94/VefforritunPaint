@@ -144,8 +144,14 @@ function saveMove(move) {
 }
 
 function createShape(shape) {
+  let shapeID = appVars.shapes.length;  // Shape ID is its ID on the shape stack for now
+
+  deselectAll();
+  shape.selected = true;          // should go out of use soon
+  appVars.selected.push(shapeID); // use this instead
+
   appVars.shapes.push(shape);
-  appVars.events.push({command: "create", shapeID: appVars.shapes.length-1});
+  appVars.events.push({command: "create", shapeID: shapeID});
   appVars.undone = [];
 }
 
