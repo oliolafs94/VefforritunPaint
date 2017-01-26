@@ -67,7 +67,6 @@ $(document).ready(function () {
 
     eventVars.currentShape = null; // End any ongoing shape operations
     eventVars.moveCoords = null;
-    eventVars.undone = [];         // Clear undone stack since a new event occurred
   });
 
   $(eventVars.canvas).mousemove(function(e) {
@@ -101,9 +100,7 @@ $(document).ready(function () {
   // Sets which shape will be drawn next
   $(".dropdown-menu li a").click(function(e) {
     var idClicked = e.target.id;
-
     eventVars.nextObject = idClicked;
-
     $(".selected").text($(this).text());
   });
 
@@ -111,9 +108,9 @@ $(document).ready(function () {
   $(".colorButtons > .btn").click(function(e) {
     let idClicked = e.target.id;
     eventVars.nextColor = idClicked;
-
-
     $(this).addClass("active").siblings().removeClass("active");
+
+    colorSelected(idClicked);
   });
 
   // sets the linewidth

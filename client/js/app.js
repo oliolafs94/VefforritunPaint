@@ -127,7 +127,7 @@ function offsetShapes(move) {
     let shape = appVars.shapes[id];
     shape.move(offset.x, offset.y);
   }
-  drawAll(appVars.context);
+  drawAll();
 }
 
 // Used to add the last move to the Stack
@@ -146,4 +146,14 @@ function saveMove(move) {
 function createShape(shape) {
   appVars.shapes.push(shape);
   appVars.events.push({command: "create", shapeID: appVars.shapes.length-1});
+  appVars.undone = [];
+}
+
+function colorSelected(color) {
+  for(let i = 0; i < appVars.selected.length; i++) {
+    let id = appVars.selected[i];
+    appVars.shapes[id].color = color;
+  }
+
+  drawAll();
 }
