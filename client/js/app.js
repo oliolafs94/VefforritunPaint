@@ -124,7 +124,7 @@ function redo() {
         let id = event.colored[i].shapeID;
         let shape = appVars.shapes[id];
         shape.color = event.colored[i].newColor;
-        
+
         appVars.events.push(event);
       }
     }
@@ -160,7 +160,11 @@ function saveMove(move) {
     from: {x: move.originX, y: move.originY},
     to: {x: move.endX, y: move.endY}
   });
-  appVars.events.push(event);
+
+  // Only save the move if the cursor actually moved
+  if(event.from.x !== event.to.x && event.from.y !== event.to.y) {
+    appVars.events.push(event);
+  }
 }
 
 function createShape(shape) {
@@ -193,5 +197,6 @@ function colorSelected(color) {
   }
 
   appVars.events.push({command: "color", colored:colored}); // Push all changes as a single color event
+  console.log(appVars.events);
   drawAll();
 }
