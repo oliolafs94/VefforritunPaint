@@ -6,7 +6,7 @@ var eventVars = {
   nextColor: "black", // Default color
   nextLineWidth: 1,   // Default line width
   currentShape: null, // Shape currently being created by user
-  moveCoords: null,   // Track movement of a selected shape
+  moveCoords: null   // Track movement of a selected shape
 };
 
 

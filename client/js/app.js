@@ -79,6 +79,16 @@ function undo() {
       }
       appVars.undone.push(event);
     }
+    else if(event.command === "color") {
+
+      for(let i = 0; i < event.colored.length; i++) {
+        let id = event.colored[i].shapeID;
+        let shape = appVars.shapes[id];
+        shape.color = event.colored[i].oldColor;
+
+        appVars.undone.push(event);
+      }
+    }
   }
 
   drawAll();  // redraw canvas
@@ -107,6 +117,16 @@ function redo() {
         appVars.shapes[id].move(offset.x, offset.y);
       }
       appVars.events.push(event);
+    }
+    else if(event.command === "color") {
+
+      for(let i = 0; i < event.colored.length; i++) {
+        let id = event.colored[i].shapeID;
+        let shape = appVars.shapes[id];
+        shape.color = event.colored[i].newColor;
+        
+        appVars.events.push(event);
+      }
     }
   }
 
@@ -155,15 +175,23 @@ function createShape(shape) {
   appVars.undone = [];
 }
 
+// Colors all selected symbols and stores it as a single evnt for all colored shapes
+// That way we can undo all symbols colored by one action in one undo action
 function colorSelected(color) {
-  let colored = [];
+  let colored = []; // Keep all colored symbols in one variable
+
   for(let i = 0; i < appVars.selected.length; i++) {
     let id = appVars.selected[i];
     let shape = appVars.shapes[id];
-
-    appVars.events.push({command: "color", shapeID: id, new: color, old: shape.color});
-    appVars.shapes[id].color = color;
+    let change = {  // Each color change is kept seperate, because old colors are different
+      shapeID: id,
+      newColor: color,
+      oldColor: shape.color
+    };
+    colored.push(change);
+    shape.color = color;
   }
-  console.log(appVars.events);
+
+  appVars.events.push({command: "color", colored:colored}); // Push all changes as a single color event
   drawAll();
 }
