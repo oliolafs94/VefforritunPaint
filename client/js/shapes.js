@@ -81,6 +81,21 @@ class Rect extends Shape {
   }
 }
 
+class TextBox extends Rect {
+  constructor(x, y, color, fontSize, text) {
+    super(x, y, color, 0);
+    this.fontSize = fontSize + "px";
+    this.font = "Arial";
+    this.text = text;
+  }
+
+  draw(context) {
+    context.strokeStyle = this.color;
+    context.font = this.fontSize + " " + this.font;
+    context.fillText(this.text, this.startX, this.startY);
+  }
+}
+
 /**
 Line shape
 Uses standard color, start and end coordinate behavior from super
