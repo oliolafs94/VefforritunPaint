@@ -5,7 +5,7 @@ var eventVars = {
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
   nextLineWidth: 5,   // Default line width
-  nextFontSize: 12,
+  nextFontSize: 18,   // Default font size
   textArea: null,
   currentShape: null, // Shape currently being created by user
   moveCoords: null   // Track movement of a selected shape
@@ -169,6 +169,15 @@ $(document).ready(function () {
     else if(idClicked === "redoButton") {
       redo();
     }
+  });
+
+  $( ".saveButton" ).submit(function() {
+    let title = $("#saveInput").val();
+
+    if(title.match(/[a-z]/i) || title.match(/\d+/g)){     //check if title contains characters
+      appVars.title = title;
+    }
+    console.log(appVars.title);
   });
 
 });

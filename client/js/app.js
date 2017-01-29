@@ -1,6 +1,7 @@
 var appVars = {
   canvasDimensions: null,
   context: null,          // Canvas context, loaded by commands.js
+  title: "drawing",
   shapes: [],             // All shapes on canvas, including deleted
   events: [],             // Stack that tracks all actions on shapes (create, delete, move, ...)
   undone: [],             // Stack containing undone actions
