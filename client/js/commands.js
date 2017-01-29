@@ -51,7 +51,13 @@ $(document).ready(function () {
 
       case("text"):
         var textarea = eventVars.textArea;
-        textarea.hidden = false;
+        if(textarea.hidden === true) {
+          textarea.hidden = false;
+        }
+        else {
+          textarea.hidden = true;
+        }
+
         textarea.style.position = "absolute";
         textarea.style.left = e.offsetX +"px";
         textarea.style.top = e.offsetY + "px";
@@ -62,10 +68,10 @@ $(document).ready(function () {
 
   $(eventVars.canvas).mouseup(function() {
 
-    if(eventVars.currentShape !== null && eventVars.currentShape.isValid()) {
+    if(eventVars.currentShape instanceof Object && eventVars.currentShape.isValid()) {
       createShape(eventVars.currentShape);
     }
-    else if(eventVars.moveCoords instanceof Object && eventVars.moveCoords.isValid()) {
+    else if(eventVars.moveCoords instanceof Move && eventVars.moveCoords.isValid()) {
       saveMove(eventVars.moveCoords);
     }
 
@@ -77,12 +83,12 @@ $(document).ready(function () {
   $(eventVars.canvas).mousemove(function(e) {
     var shape = eventVars.currentShape;
 
-    if(shape !== null) {
+    if(shape instanceof Object) {
       shape.setEnd(e.offsetX, e.offsetY);
       drawAll();
       shape.draw(eventVars.context);
     }
-    else if(eventVars.moveCoords !== null) {
+    else if(eventVars.moveCoords instanceof Move) {
       eventVars.moveCoords.setEnd(e.offsetX, e.offsetY);
       offsetShapes(eventVars.moveCoords);
     }
@@ -93,15 +99,15 @@ $(document).ready(function () {
 
     if(e.ctrlKey) {             // ctrl is held
 
-      if(e.which == 90) {       // z was pressed
+      if(e.which === 90) {       // z was pressed
         undo();
       }
-      else if(e.which == 89) {  // y was pressed
+      else if(e.which === 89) {  // y was pressed
         redo();
       }
     }
 
-    if(e.which == 13) { // Enter was pressed
+    if(e.which === 13) { // Enter was pressed
       let textArea = eventVars.textArea;
       if(textArea instanceof Object && textArea.hidden === false) {
 
