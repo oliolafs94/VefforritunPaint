@@ -24,3 +24,7 @@ body {
 .white {
   background-color: #ffffff;
 }
+
+#loadDrawing {
+  size: 5;
+}

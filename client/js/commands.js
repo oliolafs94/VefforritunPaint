@@ -180,4 +180,9 @@ $(document).ready(function () {
     console.log(appVars.title);
   });
 
+  $( ".loadButton" ).submit(function() {
+    let title = $("#loadDrawing").val();
+    
+  });
+
 });
