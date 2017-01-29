@@ -11,6 +11,9 @@ body {
 
 #myCanvas {
   border: 1px solid #d3d3d3;
+  border-radius: 25px;
+  width: 800px;
+  height: 400px;
 }
 
 .black-backround {
