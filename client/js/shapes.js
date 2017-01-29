@@ -173,6 +173,27 @@ class Pen extends Shape {
     context.strokeStyle = this.color;
     context.stroke();
   }
+
+  contains(x, y) {
+    for(let i = 0; i < this.points.length; i++) {
+      let point = this.points[i];
+      let dx = point.x - x;
+      let dy = point.y - y;
+      let dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      if(dist < 10 + this.lineWidth) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  move(x, y) {
+    super.move(x, y);
+    for(let i = 0; i < this.points.length; i++) {
+      this.points[i].x += x;
+      this.points[i].y += y;
+    }
+  }
 }
 
 /**
