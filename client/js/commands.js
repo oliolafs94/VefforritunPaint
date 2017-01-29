@@ -4,15 +4,17 @@ var eventVars = {
   context: null,      // Canvas context
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
-  nextLineWidth: 1,   // Default line width
+  nextLineWidth: 5,   // Default line width
   currentShape: null, // Shape currently being created by user
-  moveCoords: null   // Track movement of a selected shape
+  moveCoords: null,    // Track movement of a selected shape
+  textArea: null
 };
 
 
 $(document).ready(function () {
   eventVars.canvas = document.getElementById("myCanvas");
   eventVars.context = eventVars.canvas.getContext("2d");
+  eventVars.textArea = document.getElementById("textarea");
 
   // Send information needed for drawing to the app but keep it at minimum
   appVars.canvasDimensions = { width: eventVars.canvas.width, height: eventVars.canvas.height };
@@ -45,13 +47,13 @@ $(document).ready(function () {
         break;
 
       case("text"):
-        var textarea = document.getElementById("textarea");
-
+        var textarea = eventVars.textArea;
         textarea.hidden = false;
         textarea.style.position = "absolute";
         textarea.style.left = e.offsetX +"px";
         textarea.style.top = e.offsetY + "px";
         textarea.style.zIndex = eventVars.canvas.style.zIndex+1; // Places the textarea on top of the canvas
+
         break;
     }
   });
@@ -94,6 +96,24 @@ $(document).ready(function () {
       else if(e.which == 89) {  // y was pressed
         redo();
       }
+    }
+
+    if(e.which == 13) { // Enter was pressed
+      let textArea = eventVars.textArea;
+
+      // Still include "px"
+      let x = textArea.style.left;
+      let y = textArea.style.top;
+
+      // Get rid of "px"
+      x = x.slice(0, x.length-2);
+      y = y.slice(0, y.length-2);
+
+      let shape = new TextBox(x, y, this.nextColor, eventVars.nextLineWidth, textArea.value);
+      textArea.hidden = true;
+      textArea.value = "";
+      createShape(shape);
+      drawAll();
     }
   });
 
