@@ -14,14 +14,14 @@ function deselectAll() {
   }
 }
 
-function select(e) {
-  if(!e.ctrlKey) { // Clear selection if user is not holding ctrl
+function select(x, y, ctrlHeld) {
+  if(!ctrlHeld) { // Clear selection if user is not holding ctrl
     deselectAll();
   }
 
   for(let i = appVars.shapes.length-1; i >= 0; i--) {  // iterate from newest to oldest shape
     let shape = appVars.shapes[i];
-    if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
+    if(!shape.deleted && shape.contains(x, y)) {
       if(!shape.selected) {
         appVars.selected.push(i);
         shape.selected = true;

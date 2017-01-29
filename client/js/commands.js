@@ -39,7 +39,7 @@ $(document).ready(function () {
         break;
 
       case("select"):
-        if(select(e)) {
+        if(select(e.offsetX, e.offsetY, e.ctrlKey)) {
           eventVars.moveCoords = new Move(e.offsetX, e.offsetY);
         }
         break;
