@@ -171,12 +171,11 @@ function createShape(shape) {
   let shapeID = appVars.shapes.length;  // Shape ID is its ID on the shape stack for now
 
   deselectAll();
-  shape.selected = true;          // should go out of use soon
-  appVars.selected.push(shapeID); // use this instead
 
   appVars.shapes.push(shape);
   appVars.events.push({command: "create", shapeID: shapeID});
   appVars.undone = [];
+
 }
 
 // Colors all selected symbols and stores it as a single evnt for all colored shapes
@@ -197,6 +196,6 @@ function colorSelected(color) {
   }
 
   appVars.events.push({command: "color", colored:colored}); // Push all changes as a single color event
-  console.log(appVars.events);
+
   drawAll();
 }
