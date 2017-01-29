@@ -82,9 +82,9 @@ class Rect extends Shape {
 }
 
 class TextBox extends Rect {
-  constructor(x, y, color, lineWidth, text) {
-    super(x, y, color, lineWidth);
-    this.fontSize = Number(lineWidth) + 10 + "px";
+  constructor(x, y, color, fontSize, text) {
+    super(x, y, color, 0);
+    this.fontSize = fontSize + "px";
     this.font = "Arial";
     this.text = text;
   }
