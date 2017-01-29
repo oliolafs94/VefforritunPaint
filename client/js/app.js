@@ -226,7 +226,8 @@ function load(id) {
     data: content,
     dataType: "json",
     success: function(data) {
-      console.log(data);
+      appVars.shapes = data.content;
+      drawAll();
     },
     error: function(xhr, err) {
       console.log(err);
