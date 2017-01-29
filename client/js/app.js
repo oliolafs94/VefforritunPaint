@@ -200,25 +200,58 @@ function colorSelected(color) {
   drawAll();
 }
 
-function postTest() {
-			var param = { "user": "Kristo", // You should use your own username!
-				"name": "myTitle",
-				"content": appVars.shapes.toString(),
-				"template": true
-			};
+function loadAll() {
+  let url = "http://localhost:3000/api/drawings";
+  let content = null;
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: content,
+    dataType: "json",
+    success: function(data) {
+      console.log(data);
+    },
+    error: function(xhr, err) {
+      console.log(err);
+    }
+  });
+}
 
-			$.ajax({
-				type: "POST",
-				contentType: "application/json; charset=utf-8",
-				url: "http://localhost:8000/api/drawings",
-				data: param,
-				dataType: "jsonp",
-				crossDomain: true,
-				success: function (data) {
-          console.log("success");
-				},
-				error: function (xhr, err) {
-          console.log("error");
-				}
-			});
+function load(id) {
+  let url = "http://localhost:3000/api/drawings/" + id;
+  let content = null;
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: content,
+    dataType: "json",
+    success: function(data) {
+      console.log(data);
+    },
+    error: function(xhr, err) {
+      console.log(err);
+    }
+  });
+}
+
+function saveAll() {
+  var drawing = {
+      title: "Nú er gaman",
+      content: appVars.shapes
+    };
+
+    let url = "http://localhost:3000/api/drawings";
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      url: url,
+      data: JSON.stringify(drawing),
+      success: function (data) {
+        console.log(data);
+      },
+      error: function (xhr, err) {
+        console.log(err);
+    }
+  });
 }

@@ -169,7 +169,5 @@ $(document).ready(function () {
     else if(idClicked === "redoButton") {
       redo();
     }
-
-    postTest();
   });
 });
