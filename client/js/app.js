@@ -266,6 +266,9 @@ function loadDrawing(id) {
             shapes.push(shape);
           }
         }
+        appVars.events = [];
+        appVars.undone = [];
+        appVars.selected = [];
       }
 
       appVars.shapes = shapes;
