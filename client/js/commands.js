@@ -6,7 +6,7 @@ var eventVars = {
   nextColor: "black", // Default color
   nextLineWidth: 1,   // Default line width
   currentShape: null, // Shape currently being created by user
-  moveCoords: null   // Track movement of a selected shape
+  moveCoords: null,   // Track movement of a selected shape
 };
 
 
@@ -39,7 +39,7 @@ $(document).ready(function () {
         break;
 
       case("select"):
-        if(select(e)) {
+        if(select(e.offsetX, e.offsetY, e.ctrlKey)) {
           eventVars.moveCoords = new Move(e.offsetX, e.offsetY);
         }
         break;
@@ -67,6 +67,7 @@ $(document).ready(function () {
 
     eventVars.currentShape = null; // End any ongoing shape operations
     eventVars.moveCoords = null;
+    eventVars.undone = [];         // Clear undone stack since a new event occurred
   });
 
   $(eventVars.canvas).mousemove(function(e) {
@@ -100,7 +101,9 @@ $(document).ready(function () {
   // Sets which shape will be drawn next
   $(".dropdown-menu li a").click(function(e) {
     var idClicked = e.target.id;
+
     eventVars.nextObject = idClicked;
+
     $(".selected").text($(this).text());
   });
 
@@ -108,9 +111,9 @@ $(document).ready(function () {
   $(".colorButtons > .btn").click(function(e) {
     let idClicked = e.target.id;
     eventVars.nextColor = idClicked;
-    $(this).addClass("active").siblings().removeClass("active");
 
-    colorSelected(idClicked);
+
+    $(this).addClass("active").siblings().removeClass("active");
   });
 
   $(".jscolor").change(function(){
@@ -124,6 +127,12 @@ $(document).ready(function () {
   // sets the linewidth
   $("#linewidth").change(function() {
     let value = $("#linewidth").val();
+    eventVars.nextLineWidth = value;
+  });
+
+  // sets the linewidth
+  $("#fontsize").change(function() {
+    let value = $("#fontsize").val();
     eventVars.nextLineWidth = value;
   });
 

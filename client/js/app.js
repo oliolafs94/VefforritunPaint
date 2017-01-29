@@ -14,14 +14,14 @@ function deselectAll() {
   }
 }
 
-function select(e) {
-  if(!e.ctrlKey) { // Clear selection if user is not holding ctrl
+function select(x, y, ctrlHeld) {
+  if(!ctrlHeld) { // Clear selection if user is not holding ctrl
     deselectAll();
   }
 
   for(let i = appVars.shapes.length-1; i >= 0; i--) {  // iterate from newest to oldest shape
     let shape = appVars.shapes[i];
-    if(!shape.deleted && shape.contains(e.offsetX, e.offsetY)) {
+    if(!shape.deleted && shape.contains(x, y)) {
       if(!shape.selected) {
         appVars.selected.push(i);
         shape.selected = true;
@@ -171,12 +171,11 @@ function createShape(shape) {
   let shapeID = appVars.shapes.length;  // Shape ID is its ID on the shape stack for now
 
   deselectAll();
-  shape.selected = true;          // should go out of use soon
-  appVars.selected.push(shapeID); // use this instead
 
   appVars.shapes.push(shape);
   appVars.events.push({command: "create", shapeID: shapeID});
   appVars.undone = [];
+
 }
 
 // Colors all selected symbols and stores it as a single evnt for all colored shapes
@@ -197,6 +196,6 @@ function colorSelected(color) {
   }
 
   appVars.events.push({command: "color", colored:colored}); // Push all changes as a single color event
-  console.log(appVars.events);
+
   drawAll();
 }

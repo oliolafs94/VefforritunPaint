@@ -14,7 +14,7 @@ class Shape {
     this.startX = x;
     this.startY = y;
     this.color = color;
-    this.lineWidth = lineWidth;
+    this.lineWidth = Number(lineWidth);
     this.endX = null;
     this.endY = null;
     this.deleted = false;
@@ -36,11 +36,17 @@ class Shape {
     this.endY += y;
   }
 
-  // Should be overwritten by all shapes!
-  contains() {
-    let msg = "The contains(x, y) function was not overloaded!"
-            + "It must be overloaded by all shapes";
-    throw new Error(msg);
+  // Checks whether or not the given coordinates are within a square area
+  contains(x, y) {
+
+    // We must take into account that the end points
+    // may or may not be above the start points
+    let withinX = (this.startX <= x && x <= this.endX)
+               || (this.startX >= x && x >= this.endX); // x is on rect length
+    let withinY = (this.startY <= y && y <= this.endY)
+               || (this.startY >= y && y >= this.endY); // y is on rect height
+
+    return withinX && withinY;
   }
 
   // Checks for any null coordinates
@@ -73,19 +79,6 @@ class Rect extends Shape {
     context.lineWidth = this.lineWidth;
     context.strokeRect(this.startX, this.startY, this.endX - this.startX, this.endY - this.startY);
   }
-
-  // Checks whether or not the given coordinates are within the square
-  contains(x, y) {
-
-    // We must take into account that the end points
-    // may or may not be above the start points
-    let withinX = (this.startX <= x && x <= this.endX)
-               || (this.startX >= x && x >= this.endX); // x is on rect length
-    let withinY = (this.startY <= y && y <= this.endY)
-               || (this.startY >= y && y >= this.endY); // y is on rect height
-
-    return withinX && withinY;
-  }
 }
 
 /**
@@ -105,6 +98,26 @@ class Line extends Shape {
     context.lineWidth = this.lineWidth;
     context.strokeStyle = this.color;
     context.stroke();
+  }
+
+  /**
+  Make a linear function describing the line. Put the click x coord into it and
+  see if the result is close to the real click y coord.
+  **/
+  contains(x, y) {
+
+    // Don't take the offset from (0, 0) into account
+    x = x - this.startX;
+    y = y - this.startY;
+
+    let dx = this.endX - this.startX;
+    let dy = this.endY - this.startY;
+    let slope = dy/dx;
+
+    let resultY = x*slope;
+    let dist = Math.abs(resultY - y);
+
+    return dist < (10 + this.lineWidth);
   }
 }
 
@@ -159,6 +172,27 @@ class Pen extends Shape {
     context.lineWidth = this.lineWidth;
     context.strokeStyle = this.color;
     context.stroke();
+  }
+
+  contains(x, y) {
+    for(let i = 0; i < this.points.length; i++) {
+      let point = this.points[i];
+      let dx = point.x - x;
+      let dy = point.y - y;
+      let dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      if(dist < 10 + this.lineWidth) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  move(x, y) {
+    super.move(x, y);
+    for(let i = 0; i < this.points.length; i++) {
+      this.points[i].x += x;
+      this.points[i].y += y;
+    }
   }
 }
 
