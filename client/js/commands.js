@@ -5,7 +5,7 @@ var eventVars = {
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
   nextLineWidth: 5,   // Default line width
-  nextFontSize: "12px",
+  nextFontSize: 12,
   textArea: null,
   currentShape: null, // Shape currently being created by user
   moveCoords: null   // Track movement of a selected shape
@@ -101,20 +101,24 @@ $(document).ready(function () {
 
     if(e.which == 13) { // Enter was pressed
       let textArea = eventVars.textArea;
+      if(textArea instanceof Object && textArea.hidden === false) {
 
-      // Still include "px"
-      let x = textArea.style.left;
-      let y = textArea.style.top;
+        // Still include "px"
+        let x = textArea.style.left;
+        let y = textArea.style.top;
 
-      // Get rid of "px"
-      x = x.slice(0, x.length-2);
-      y = y.slice(0, y.length-2);
+        // Get rid of "px"
+        x = x.slice(0, x.length-2);
+        y = y.slice(0, y.length-2);
 
-      let shape = new TextBox(x, y, this.nextColor, eventVars.nextFontSize, textArea.value);
-      textArea.hidden = true;
-      textArea.value = "";
-      createShape(shape);
-      drawAll();
+        console.log(eventVars.nextFontSize);
+
+        let shape = new TextBox(x, y, eventVars.nextColor, eventVars.nextFontSize, textArea.value);
+        textArea.hidden = true;
+        textArea.value = "";
+        createShape(shape);
+        drawAll();
+      }
     }
   });
 
