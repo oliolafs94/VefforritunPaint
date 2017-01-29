@@ -108,10 +108,8 @@ $(document).ready(function () {
         let y = textArea.style.top;
 
         // Get rid of "px"
-        x = x.slice(0, x.length-2);
-        y = y.slice(0, y.length-2);
-
-        console.log(eventVars.nextFontSize);
+        x = Number(x.slice(0, x.length-2));
+        y = Number(y.slice(0, y.length-2));
 
         let shape = new TextBox(x, y, eventVars.nextColor, eventVars.nextFontSize, textArea.value);
         textArea.hidden = true;
