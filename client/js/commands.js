@@ -132,7 +132,6 @@ $(document).ready(function () {
     let idClicked = e.target.id;
     eventVars.nextColor = idClicked;
 
-
     $(this).addClass("active").siblings().removeClass("active");
   });
 
