@@ -4,7 +4,8 @@ var eventVars = {
   context: null,      // Canvas context
   nextObject: "pen",  // Default tool
   nextColor: "black", // Default color
-  nextLineWidth: 1,   // Default line width
+  nextLineWidth: 5,   // Default line width
+  nextFontSize: "12px",
   currentShape: null, // Shape currently being created by user
   moveCoords: null,   // Track movement of a selected shape
 };
@@ -125,7 +126,7 @@ $(document).ready(function () {
   // sets the linewidth
   $("#fontsize").change(function() {
     let value = $("#fontsize").val();
-    eventVars.nextLineWidth = value;
+    eventVars.nextFontSize = value;
   });
 
   // calls redo or undo if the buttons are pressed
