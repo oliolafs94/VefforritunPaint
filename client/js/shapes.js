@@ -62,6 +62,10 @@ class Shape {
     }
     return valid;
   }
+
+  revive(mystery) {
+    this.setEnd(mystery.endX, mystery.endY);
+  }
 }
 
 /**
@@ -72,6 +76,7 @@ Uses own draw function
 class Rect extends Shape {
   constructor(x, y, color, lineWidth) {
     super(x, y, color, lineWidth);
+    this.type = "Rect";
   }
 
   draw(context) {
@@ -89,6 +94,7 @@ class TextBox extends Rect {
     this.fontSize = fontSize + "px";
     this.font = "Arial";
     this.text = text;
+    this.type = "TextBox";
   }
 
   draw(context) {
@@ -106,6 +112,7 @@ Uses own draw function
 class Line extends Shape {
   constructor(x, y, color, lineWidth) {
     super(x, y, color, lineWidth);
+    this.type = "Line";
   }
 
   draw(context) {
@@ -155,6 +162,7 @@ class Move extends Line {
 
     this.originX = x;
     this.originY = y;
+    this.type = "Move";
   }
 }
 
@@ -165,6 +173,7 @@ class Pen extends Shape {
   constructor(x, y, color, lineWidth) {
     super(x, y, color, lineWidth);
     this.points = [];
+    this.type = "Pen";
   }
 
 
@@ -211,6 +220,12 @@ class Pen extends Shape {
       this.points[i].y += y;
     }
   }
+
+  revive(mystery) {
+    for(let i = 0; i < mystery.points.length; i++) {
+      this.setEnd(mystery.points[i].x, mystery.points[i].y);
+    }
+  }
 }
 
 /**
@@ -224,6 +239,7 @@ class Circle extends Shape {
     this.center = null;    // center coordinates
     this.rX = null;        // x radius
     this.rY = null;        // y radius
+    this.type = "Circle";
   }
 
   setEnd(x, y) {
@@ -269,5 +285,9 @@ class Circle extends Shape {
       x: this.center.x + x,
       y: this.center.y + y
     };
+  }
+
+  revive(mystery) {
+    this.setEnd(mystery.endX, mystery.endY);
   }
 }

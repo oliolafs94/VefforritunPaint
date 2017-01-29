@@ -218,15 +218,49 @@ function loadAll() {
 }
 
 function load(id) {
-  let url = "http://localhost:3000/api/drawings/" + id;
   let content = null;
+  let url = "http://localhost:3000/api/drawings/" + id;
   $.ajax({
     type: "GET",
     url: url,
     data: content,
     dataType: "json",
     success: function(data) {
-      appVars.shapes = data.content;
+      let shapes = [];
+
+      for(let i = 0; i < data.content.length; i++) {
+        let mo = data.content[i]; // Mystery Object
+        if(mo.deleted === false) {
+          let shape = [];
+          if(mo.type === "Rect") {
+            shape = new Rect(mo.startX, mo.startY, mo.color, mo.lineWidth);
+            shape.revive(mo);
+            shapes.push(shape);
+          }
+          else if(mo.type === "TextBox") {
+            shape = new TextBox(mo.startX, mo.startY, mo.color, mo.fontSize, mo.text);
+            shape.revive(mo);
+            shapes.push(shape);
+          }
+          else if(mo.type === "Line") {
+            shape = new Line(mo.startX, mo.startY, mo.color, mo.lineWidth);
+            shape.revive(mo);
+            shapes.push(shape);
+          }
+          else if(mo.type === "Pen") {
+            shape = new Pen(mo.startX, mo.startY, mo.color, mo.lineWidth);
+            shape.revive(mo);
+            shapes.push(shape);
+          }
+          else if(mo.type === "Circle") {
+            shape = new Circle(mo.startX, mo.startY, mo.color, mo.lineWidth);
+            shape.revive(mo);
+            shapes.push(shape);
+          }
+        }
+      }
+
+      appVars.shapes = shapes;
       drawAll();
     },
     error: function(xhr, err) {
@@ -237,7 +271,7 @@ function load(id) {
 
 function saveAll() {
   var drawing = {
-      title: "Nú er gaman",
+      title: appVars.title || "placeholder",
       content: appVars.shapes
     };
 
