@@ -54,7 +54,6 @@ $(document).ready(function () {
         textarea.style.left = e.offsetX +"px";
         textarea.style.top = e.offsetY + "px";
         textarea.style.zIndex = eventVars.canvas.style.zIndex+1; // Places the textarea on top of the canvas
-
         break;
     }
   });
@@ -111,7 +110,7 @@ $(document).ready(function () {
       x = x.slice(0, x.length-2);
       y = y.slice(0, y.length-2);
 
-      let shape = new TextBox(x, y, this.nextColor, eventVars.nextLineWidth, textArea.value);
+      let shape = new TextBox(x, y, this.nextColor, eventVars.nextFontSize, textArea.value);
       textArea.hidden = true;
       textArea.value = "";
       createShape(shape);
