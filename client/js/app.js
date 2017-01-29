@@ -182,7 +182,7 @@ function createShape(shape) {
 // That way we can undo all symbols colored by one action in one undo action
 function colorSelected(color) {
   let colored = []; // Keep all colored symbols in one variable
-  
+
   for(let i = 0; i < appVars.selected.length; i++) {
     let id = appVars.selected[i];
     let shape = appVars.shapes[id];
