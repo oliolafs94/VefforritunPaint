@@ -135,6 +135,8 @@ $(document).ready(function () {
     eventVars.nextColor = idClicked;
 
     $(this).addClass("active").siblings().removeClass("active");
+
+    colorSelected(idClicked);
   });
 
   $(".jscolor").change(function(){
@@ -146,14 +148,14 @@ $(document).ready(function () {
   });
 
   // sets the linewidth
-  $("#linewidth").change(function() {
-    let value = $("#linewidth").val();
+  $(".linewidth").change(function() {
+    let value = $(".linewidth").val();
     eventVars.nextLineWidth = value;
   });
 
   // sets the linewidth
-  $("#fontsize").change(function() {
-    let value = $("#fontsize").val();
+  $(".fontsize").change(function() {
+    let value = $(".fontsize").val();
     eventVars.nextFontSize = value;
   });
 
@@ -161,10 +163,10 @@ $(document).ready(function () {
   $(".redoButtons > .btn").click(function(e) {
     let idClicked = e.target.id;
 
-    if(idClicked == "undoButton") {
+    if(idClicked === "undoButton") {
       undo();
     }
-    else if(idClicked == "redoButton") {
+    else if(idClicked === "redoButton") {
       redo();
     }
   });
