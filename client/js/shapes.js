@@ -84,6 +84,8 @@ class Rect extends Shape {
 class TextBox extends Rect {
   constructor(x, y, color, fontSize, text) {
     super(x, y, color, 0);
+    this.endX = this.startX + (text.length*(fontSize/2));
+    this.endY = this.startY - fontSize;
     this.fontSize = fontSize + "px";
     this.font = "Arial";
     this.text = text;
