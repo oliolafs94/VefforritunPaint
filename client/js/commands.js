@@ -113,6 +113,14 @@ $(document).ready(function () {
     colorSelected(idClicked);
   });
 
+  $(".jscolor").change(function(){
+    let value = "#";
+    value = value.concat($(".jscolor").val());
+    eventVars.nextColor = value;
+
+    colorSelected(value);
+  });
+
   // sets the linewidth
   $("#linewidth").change(function() {
     let value = $("#linewidth").val();
