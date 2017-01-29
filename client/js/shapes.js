@@ -1,9 +1,4 @@
 /**
-  TODO: REFACTOR OBSOLETE COMMENTS
-**/
-
-
-/**
 Base shape object used for inheritance by all specific canvas shapes
 Contains start coordinates, end coordinates, color and a soft deletion flag
 **/
@@ -230,8 +225,6 @@ class Pen extends Shape {
 
 /**
 Ellipse shape
-TODO: implement alternate perfect circle shape when shift is held
-TODO: probably rename to Ellipse
 **/
 class Circle extends Shape {
   constructor(x, y, color, lineWidth) {
