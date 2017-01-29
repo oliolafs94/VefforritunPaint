@@ -22,7 +22,7 @@ var db = {
 // Set up routes:
 
 function listItems(collection) {
-	var result = _.map(collection, (d) => { return _.pick(d, "title", "id")} );
+	var result = _.map(collection, (d) => { return _.pick(d, "title", "id");} );
 	return result;
 }
 

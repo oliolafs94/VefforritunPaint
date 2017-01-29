@@ -199,3 +199,26 @@ function colorSelected(color) {
 
   drawAll();
 }
+
+function postTest() {
+			var param = { "user": "Kristo", // You should use your own username!
+				"name": "myTitle",
+				"content": appVars.shapes.toString(),
+				"template": true
+			};
+
+			$.ajax({
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+				url: "http://localhost:8000/api/drawings",
+				data: param,
+				dataType: "jsonp",
+				crossDomain: true,
+				success: function (data) {
+          console.log("success");
+				},
+				error: function (xhr, err) {
+          console.log("error");
+				}
+			});
+}
