@@ -17,6 +17,8 @@ $(document).ready(function () {
   eventVars.context = eventVars.canvas.getContext("2d");
   eventVars.textArea = document.getElementById("textarea");
 
+  getDrawingIDs();
+
   // Send information needed for drawing to the app but keep it at minimum
   appVars.canvasDimensions = { width: eventVars.canvas.width, height: eventVars.canvas.height };
   appVars.context = eventVars.context;
@@ -178,10 +180,12 @@ $(document).ready(function () {
       appVars.title = title;
     }
     console.log(appVars.title);
+    saveShapes();
   });
 
   $( ".loadButton" ).submit(function() {
-    let title = $("#loadDrawing").val();
-
+    let id = $("#loadDrawing").val();
+    console.log(id);
+    loadDrawing(id);
   });
 });

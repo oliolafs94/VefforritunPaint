@@ -201,16 +201,23 @@ function colorSelected(color) {
   drawAll();
 }
 
-function loadAll() {
+function getDrawingIDs() {
   let url = "http://localhost:3000/api/drawings";
   let content = null;
+  let drawings = $("#loadDrawing");
   $.ajax({
     type: "GET",
     url: url,
+    context: document.body,
     data: content,
     dataType: "json",
     success: function(data) {
-      console.log(data);
+      for(let i = 0; i < data.length; i++) {
+        let option = data[i];
+        drawings.append($("<option></option>")
+          .attr("value", data[i].id)
+          .text(data[i].title));
+      }
     },
     error: function(xhr, err) {
       console.log(err);
@@ -218,7 +225,7 @@ function loadAll() {
   });
 }
 
-function load(id) {
+function loadDrawing(id) {
   let content = null;
   let url = "http://localhost:3000/api/drawings/" + id;
   $.ajax({
@@ -270,9 +277,9 @@ function load(id) {
   });
 }
 
-function saveAll() {
+function saveShapes() {
   var drawing = {
-      title: appVars.title || "placeholder",
+      title: appVars.title || "myDrawing",
       content: appVars.shapes
     };
 
@@ -284,7 +291,7 @@ function saveAll() {
       url: url,
       data: JSON.stringify(drawing),
       success: function (data) {
-        console.log(data);
+        getDrawingIDs();
       },
       error: function (xhr, err) {
         console.log(err);

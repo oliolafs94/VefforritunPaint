@@ -91,7 +91,7 @@ class TextBox extends Rect {
     super(x, y, color, 0);
     this.endX = this.startX + (text.length*(fontSize/2));
     this.endY = this.startY - fontSize;
-    this.fontSize = fontSize + "px";
+    this.fontSize = fontSize;
     this.font = "Arial";
     this.text = text;
     this.type = "TextBox";
@@ -99,7 +99,7 @@ class TextBox extends Rect {
 
   draw(context) {
     context.strokeStyle = this.color;
-    context.font = this.fontSize + " " + this.font;
+    context.font = this.fontSize + "px " + this.font;
     context.fillText(this.text, this.startX, this.startY);
   }
 }
